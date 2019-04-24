@@ -4,10 +4,9 @@ import {Provider} from 'react-redux'
 import {combineReducers, createStore} from "redux";
 import styled from "styled-components";
 import {pathReducer} from "./PathPage/pathReducer";
-import {Route, Switch} from "react-router";
-import PathScreen from "./PathPage/PathPage";
 
 import './App.css';
+import Shell from "./Shell/Shell";
 
 
 const StyledApp = styled.div`
@@ -28,9 +27,7 @@ class App extends Component {
             <BrowserRouter>
                 <Provider store={store}>
                     <StyledApp>
-                        <Switch>
-                            <Route exact path='/' component={PathScreen}/>
-                        </Switch>
+                            <Shell/>
                     </StyledApp>
                 </Provider>
             </BrowserRouter>
