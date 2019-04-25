@@ -22,7 +22,7 @@ const StyledIconButton = styled(IconButton)`
     -webkit-app-region: no-drag;
 `;
 
-const styles = theme => ({
+const styles = () => ({
     button: {
         "&:hover": {
             backgroundColor: "transparent"
@@ -32,7 +32,6 @@ const styles = theme => ({
         fontSize: "20px"
     }
 });
-
 
 const TitleBar = props => {
     const {classes} = props;

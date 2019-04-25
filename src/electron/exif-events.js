@@ -6,7 +6,6 @@ ipcMain.on('readFile', (event, arg) => {
     exiftool
         .read('../../../Projects/Photos/JPG/_DSF6570.JPG')
         .then(tags => {
-            console.log('listener' + tags);
             event.sender.send('readFile-reply', tags)
         })
         .catch(err => console.error("Something terrible happened: ", err));
@@ -20,7 +19,6 @@ ipcMain.on('readFolder', (event, {path}) => {
     exiftool
         .read('../../../Projects/Photos/JPG/_DSF6570.JPG')
         .then(tags => {
-            console.log('listener' + tags);
             event.sender.send('readFile-reply', tags)
         })
         .catch(err => console.error("Something terrible happened: ", err));

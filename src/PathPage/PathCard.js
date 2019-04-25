@@ -15,6 +15,13 @@ const StyledPathCard = styled(Card)`
     align-items: center;
 `;
 
+const StyledPathText = styled(Typography)`
+    display: block;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+`;
+
 export const PathCard = props => {
     const selectDirectory = setSrcPath => {
         dialog.showOpenDialog(
@@ -23,7 +30,7 @@ export const PathCard = props => {
     return (
         <StyledPathCard>
             <Button onClick={() => selectDirectory(props.setPath)}>{props.text}</Button>
-            <Typography>{props.path}</Typography>
+            <StyledPathText>{props.path}</StyledPathText>
         </StyledPathCard>
     );
 };

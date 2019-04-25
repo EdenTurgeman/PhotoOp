@@ -1,4 +1,4 @@
-import {SET_DEST, SET_SRC} from "./pathActions";
+import {SET_DEST, SET_SRC} from "../actions/pathActions";
 
 const initState = {
     srcPath: '',

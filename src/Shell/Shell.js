@@ -2,7 +2,9 @@ import React, {Component} from "react";
 import styled from "styled-components";
 import TitleBar from "../TitleBar/TitleBar";
 import PathPage from "../PathPage/PathPage";
-import {Route} from "react-router";
+import {Route, Switch} from "react-router";
+import PageTransition from "react-router-page-transition";
+import StructurePage from "../StructurePage/StructurePage";
 
 const StyledShell = styled.div`
     height: 100%;
@@ -14,13 +16,21 @@ const StyledShell = styled.div`
     flex-flow: column;
 `;
 
-
 class Shell extends Component {
     render() {
         return (
             <StyledShell>
                 <TitleBar/>
-                <Route path='/' component={PathPage}/>
+                <Route
+                    render={({location}) => (
+                        <PageTransition timeout={500}>
+                            <Switch location={location}>
+                                <Route exact path="/" component={PathPage}/>
+                                <Route exact path="/tags" component={StructurePage}/>
+                            </Switch>
+                        </PageTransition>
+                    )}
+                />
             </StyledShell>
         )
     }

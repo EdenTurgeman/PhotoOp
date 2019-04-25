@@ -1,7 +1,9 @@
 import React, {Component} from 'react';
 import styled from 'styled-components'
-import {Button, Card} from "@material-ui/core";
-import Chip from "@material-ui/core/Chip";
+import {Card} from "@material-ui/core";
+
+import '../SlidingRoute/transitions.css';
+import {StyledSlideContainer} from "../Common/StyledComponents";
 
 const StyledFolderCard = styled(Card)`
     width: 300px;
@@ -11,9 +13,10 @@ const StyledFolderCard = styled(Card)`
 class StructurePage extends Component {
     render() {
         return (
-            <StyledFolderCard>
-                <Chip></Chip>
-            </StyledFolderCard>
+            <StyledSlideContainer className="transition-item to-page">
+                <StyledFolderCard>
+                </StyledFolderCard>
+            </StyledSlideContainer>
         );
     }
 }
