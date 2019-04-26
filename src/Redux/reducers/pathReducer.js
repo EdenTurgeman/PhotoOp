@@ -1,8 +1,16 @@
-import {SET_DEST, SET_SRC} from "../actions/pathActions";
+import {ADD_FIELD, REMOVE_FIELD, SET_DEST, SET_SRC} from "../actions/PathActions";
+import pathFields from '../../assets/camera-fields-map';
 
 const initState = {
     srcPath: '',
-    destPath: ''
+    destPath: '',
+    openFields: pathFields,
+    usedFields: []
+};
+
+const removeFieldByName = (array, fieldName) => {
+    const fieldIndex = array.findIndex((field) => field.alias === fieldName);
+    return array.splice(fieldIndex, 1)[0];
 };
 
 export const pathReducer = (state = initState, action) => {
@@ -18,6 +26,24 @@ export const pathReducer = (state = initState, action) => {
             state = {
                 ...state,
                 destPath: action.destPath
+            };
+            break;
+        }
+        case ADD_FIELD: {
+            const usedItem = removeFieldByName(state.openFields);
+
+            state = {
+                ...state,
+                usedFields: state.usedFields.concat(usedItem)
+            };
+            break;
+        }
+        case REMOVE_FIELD : {
+            const openedField = removeFieldByName(state.usedFields);
+
+            state = {
+                ...state,
+                openFields: state.openFields.concat(openedField)
             };
             break;
         }

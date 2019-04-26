@@ -46,7 +46,9 @@
   {
     "exifName": "FileName",
     "alias": "File Name"
+  },
+  {
+    "exifName": "AFMode",
+    "alias": "Autofocus Mode"
   }
 ]
-
-//"AFMode":"Single Point"
