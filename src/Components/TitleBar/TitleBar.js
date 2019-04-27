@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import {Close, CropSquareOutlined, MinimizeOutlined} from '@material-ui/icons'
 import {withStyles, IconButton} from "@material-ui/core";
@@ -13,9 +13,9 @@ const StyledTitleBar = styled.div`
     flex-flow: row;
     top: 0;
     width: 100%;
+    height: 40px;
     -webkit-user-select: none;
     -webkit-app-region: drag;
-    
 `;
 
 const StyledIconButton = styled(IconButton)`
@@ -37,13 +37,13 @@ const TitleBar = props => {
     const {classes} = props;
 
     const minimizeWindow = () => {
-        remote.getCurrentWindow().minimize()
+        remote.getCurrentWindow().minimize();
     };
 
     const minMaxWindow = () => {
         const currentWindow = remote.getCurrentWindow();
 
-        currentWindow.isMaximized() ? currentWindow.unmaximize() : currentWindow.maximize()
+        currentWindow.isMaximized() ? currentWindow.unmaximize() : currentWindow.maximize();
     };
 
     const closeWindow = () => {

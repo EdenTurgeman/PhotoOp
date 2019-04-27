@@ -4,7 +4,7 @@ import {Provider} from 'react-redux'
 import styled from "styled-components";
 
 import './App.css';
-import Shell from "./Shell/Shell";
+import Shell from "./Components/Shell/Shell";
 import store from "./Redux/store";
 
 

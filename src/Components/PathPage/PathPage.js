@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {connect} from "react-redux";
-import {setSrc, setDest} from "../Redux/actions/pathActions";
+import {setSrc, setDest} from "../../Redux/actions/PathActions";
 import {PathCard} from "./PathCard";
 import {Link} from "react-router-dom";
 import IconButton from "@material-ui/core/Button";
@@ -20,7 +20,6 @@ class PathPage extends Component {
     }
 
     componentDidMount() {
-        //onClick={() => ipcRenderer.send('readFile', 'ping')
         ipcRenderer.on('readFile-reply', (event, tags) => {
             this.setState({
                 tags: tags

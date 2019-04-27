@@ -1,54 +1,72 @@
-[
-  {
-    "exifName": "Aperture",
-    "alias": "Aperture"
-  },
-  {
-    "exifName": "FileCreateDate",
-    "alias": "Photo Date"
-  },
-  {
-    "exifName": "Directory",
-    "alias": "Directory"
-  },
-  {
-    "exifName": "ShutterSpeed",
-    "alias": "Shutter Speed"
-  },
-  {
-    "exifName": "Rating",
-    "alias": "Photo Rating"
-  },
-  {
-    "exifName": "Model",
-    "alias": "Camera Type"
-  },
-  {
-    "exifName": "Megapixels",
-    "alias": "MegaPixels"
-  },
-  {
-    "exifName": "LensModel",
-    "alias": "Lens Type"
-  },
-  {
-    "exifName": "ImageSize",
-    "alias": "Resolution"
-  },
-  {
-    "exifName": "ISO",
-    "alias": "ISO"
-  },
-  {
-    "exifName": "FocalLength",
-    "alias": "Focal Length"
-  },
-  {
-    "exifName": "FileName",
-    "alias": "File Name"
-  },
-  {
-    "exifName": "AFMode",
-    "alias": "Autofocus Mode"
-  }
-]
+{
+  "exifFields": [
+    {
+      "exifName": "Aperture",
+      "alias": "Aperture"
+    },
+    {
+      "exifName": "Directory",
+      "alias": "Directory"
+    },
+    {
+      "exifName": "ShutterSpeed",
+      "alias": "Shutter Speed"
+    },
+    {
+      "exifName": "Rating",
+      "alias": "Photo Rating"
+    },
+    {
+      "exifName": "Model",
+      "alias": "Camera Type"
+    },
+    {
+      "exifName": "Megapixels",
+      "alias": "MegaPixels"
+    },
+    {
+      "exifName": "LensModel",
+      "alias": "Lens Type"
+    },
+    {
+      "exifName": "ImageSize",
+      "alias": "Resolution"
+    },
+    {
+      "exifName": "ISO",
+      "alias": "ISO"
+    },
+    {
+      "exifName": "FocalLength",
+      "alias": "Focal Length"
+    },
+    {
+      "exifName": "FileName",
+      "alias": "File Name"
+    },
+    {
+      "exifName": "AFMode",
+      "alias": "Autofocus Mode"
+    }
+  ],
+  "userFields": [
+    {
+      "exifName": "FileCreateDate",
+      "alias": "Year"
+    },
+    {
+      "exifName": "FileCreateDate",
+      "alias": "Month"
+    },
+    {
+      "exifName": "FileCreateDate",
+      "alias": "Day Of Month"
+    },
+    {
+      "alias": "Project Name"
+    },
+    {
+      "alias": "File Type"
+    }
+  ]
+}
