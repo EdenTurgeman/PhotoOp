@@ -14,6 +14,15 @@ const StyledShell = styled.div`
     justify-content: space-around;
     align-items: center;
     flex-flow: column;
+    overflow: auto;
+`;
+const StyledContent = styled.div`
+    margin-top: 40px;
+    justify-content: center;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    overflow: auto;
 `;
 
 class Shell extends Component {
@@ -21,16 +30,16 @@ class Shell extends Component {
         return (
             <StyledShell>
                 <TitleBar/>
-                <Route
-                    render={({location}) => (
-                        <PageTransition timeout={500}>
-                            <Switch location={location}>
-                                <Route exact path="/" component={PathPage}/>
-                                <Route exact path="/tags" component={StructurePage}/>
-                            </Switch>
-                        </PageTransition>
-                    )}
-                />
+                <StyledContent>
+                    <Route render={({location}) => (
+                            <PageTransition timeout={500}>
+                                <Switch location={location}>
+                                    <Route exact path="/" component={PathPage}/>
+                                    <Route exact path="/tags" component={StructurePage}/>
+                                </Switch>
+                            </PageTransition>
+                        )}/>
+                </StyledContent>
             </StyledShell>
         )
     }

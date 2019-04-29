@@ -8,6 +8,7 @@ export const StyledPathContainer = styled.div`
     flex-flow: column;
     justify-content: space-evenly;
     align-items: center;
+    padding-bottom: 40px;
 `;
 
 export const StyledArrow = styled(ArrowDownward)`

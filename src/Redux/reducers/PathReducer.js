@@ -10,10 +10,15 @@ const initState = {
 
 const removeFieldByName = (array, fieldName) => {
     const fieldIndex = array.findIndex((field) => field.alias === fieldName);
-    return array.splice(fieldIndex, 1)[0];
+
+    if (fieldIndex !== -1) {
+        return array.splice(fieldIndex, 1)[0];
+    }
 };
 
 export const pathReducer = (state = initState, action) => {
+    console.log(action);
+
     switch (action.type) {
         case SET_SRC: {
             state = {
@@ -30,26 +35,30 @@ export const pathReducer = (state = initState, action) => {
             break;
         }
         case ADD_FIELD: {
-            const usedItem = removeFieldByName(state.openFields);
+            const usedField = removeFieldByName(state.openFields, action.fieldName);
 
-            state = {
-                ...state,
-                usedFields: state.usedFields.concat(usedItem)
-            };
+            if (usedField) {
+                state = {
+                    ...state,
+                    usedFields: state.usedFields.concat(usedField)
+                };
+            }
             break;
         }
         case REMOVE_FIELD : {
             const openedField = removeFieldByName(state.usedFields);
 
-            state = {
-                ...state,
-                openFields: state.openFields.concat(openedField)
-            };
+            if (openedField) {
+                state = {
+                    ...state,
+                    openFields: state.openFields.concat(openedField)
+                };
+            }
             break;
         }
         default:
             return state;
     }
-    console.log(state);
+
     return state;
 };

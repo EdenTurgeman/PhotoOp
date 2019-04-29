@@ -6,7 +6,7 @@ import {Link} from "react-router-dom";
 import IconButton from "@material-ui/core/Button";
 import {StyledArrow, StyledPathContainer} from "./StyledComponents";
 import {StyledSlideContainer} from "../Common/StyledComponents";
-import '../SlidingRoute/transitions.css';
+import '../../styles/transitions.css';
 
 const {ipcRenderer} = window.require('electron');
 
