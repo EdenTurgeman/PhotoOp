@@ -37,9 +37,17 @@ const buildPathForFile = (usedFields, filePath, rootDestPath) => {
 };
 
 
-ipcMain.on('readFile', (event, arg) => {
-
+ipcMain.on('moveFiles', (event) => {
+    exiftool
+        .read("../Photos//DSCF7063.MOV")
+        .then((tags) => {
+            event.sender.send('moveFiles-reply', tags);
+        });
 });
 
-ipcMain.on('sort', (event, {srcPath, destPath}) => {
+ipcMain.on('filesInFolder', (event, destPath) => {
+    console.log(destPath);
+    recursive(destPath,(err, files) => {
+        event.returnValue = files.length;
+    })
 });

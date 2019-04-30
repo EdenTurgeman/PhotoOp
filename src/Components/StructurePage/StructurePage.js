@@ -13,8 +13,8 @@ const StyledStructureContainer = styled.div`
     flex-flow: column;
     justify-content: center;
     align-items: center;
-    overflow: auto;
-`
+    overflow-y: auto;
+`;
 
 const StyledFab = styled(Fab)`
     position: fixed;
@@ -42,7 +42,7 @@ class StructurePage extends Component {
             <Fragment>
                 <StyledStructureContainer>
                     {
-                        this.props.path.openFields.map(field => <p>{field.alias}</p>)
+                        this.props.path.usedFields.map(( field, index) => <p key={index}>{field.alias}</p>)
                     }
                 </StyledStructureContainer>
                 <StyledFab onClick={this.openFieldsList}>

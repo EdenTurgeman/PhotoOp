@@ -24,7 +24,7 @@
     "alias": "MegaPixels"
   },
   {
-    "exifName": "LensModel",
+    "exifName": ["LensModel","LensInfo"],
     "alias": "Lens Type"
   },
   {
@@ -42,10 +42,6 @@
   {
     "exifName": "FileName",
     "alias": "File Name"
-  },
-  {
-    "exifName": "AFMode",
-    "alias": "Autofocus Mode"
   },
   {
     "exifName": "FileCreateDate",
