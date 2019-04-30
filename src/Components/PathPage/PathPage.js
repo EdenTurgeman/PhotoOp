@@ -7,7 +7,6 @@ import {ArrowDownward} from "@material-ui/icons";
 
 export const StyledArrow = styled(ArrowDownward)`
     margin: 10px;
-    color: #9E9E9E;
 `;
 
 class PathPage extends Component {
@@ -22,9 +21,9 @@ class PathPage extends Component {
     render() {
         return (
                 <Fragment>
-                    <PathCard setPath={this.props.setSrcPath} path={this.props.path.srcPath} text='Source'/>
+                    <PathCard setPath={this.props.setSrcPath} path={this.props.path.srcPath} text='From'/>
                         <StyledArrow fontSize='large'/>
-                    <PathCard setPath={this.props.setDestPath} path={this.props.path.destPath} text='Destination'/>
+                    <PathCard setPath={this.props.setDestPath} path={this.props.path.destPath} text='To'/>
                 </Fragment>
         );
     }

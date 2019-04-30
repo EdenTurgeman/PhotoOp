@@ -14,7 +14,7 @@ const StyledApp = styled.div`
     justify-content: space-around;
     align-items: center;
     display: flex;
-    background-color: #ff9800;
+    background-color: #009688;
     flex-flow: column;
 `;
 

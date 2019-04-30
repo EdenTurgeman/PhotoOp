@@ -2,21 +2,22 @@ import React, {Component} from "react";
 import TitleBar from "../TitleBar/TitleBar";
 import PathPage from "../PathPage/PathPage";
 import StructurePage from "../StructurePage/StructurePage";
-import {Step, StepButton, StepLabel, Stepper} from "@material-ui/core";
+import MovePage from "../MovePage/MovePage";
+import {Step, StepButton, StepLabel, Stepper, Typography} from "@material-ui/core";
 import {StyledContent, StyledShell, StyledSlidesContainer, StyledStepperContainer} from "./StyledComponents";
 
 const steps = [
     {
-        label: 'Path',
+        label: 'Location',
         component: <PathPage/>
     },
     {
-        label: 'Structure',
+        label: 'Folders',
         component: <StructurePage/>
     },
     {
         label: 'Move',
-        component: <dix/>
+        component: <MovePage/>
     }
 ];
 
@@ -30,7 +31,7 @@ class Shell extends Component {
 
         this.state = {
             activeStep: 0,
-            completed: [true, false]
+            completed: [false, false]
         }
     }
 
@@ -49,12 +50,12 @@ class Shell extends Component {
                         {getStepComponent(this.state.activeStep)}
                     </StyledSlidesContainer>
                     <StyledStepperContainer>
-                        <Stepper style={{backgroundColor: "transparent"}}
+                        <Stepper nonLinear  style={{backgroundColor: "transparent"}}
                                  activeStep={this.state.activeStep}>
                             {
                                 steps.map((step, index) => {
                                     return <Step key={step.label}>
-                                        <StepButton onClick={this.handleStep(index)}
+                                        <StepButton optional={<Typography variant="caption">{step.subText}</Typography>} onClick={this.handleStep(index)}
                                                     completed={this.state.completed[index]}>
                                             <StepLabel>{step.label}</StepLabel>
                                         </StepButton>

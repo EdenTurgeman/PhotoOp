@@ -1,12 +1,12 @@
-import React, {Component} from 'react';
+import React, {Component, Fragment} from 'react';
 import styled from 'styled-components';
 import {addField, removeField} from "../../Redux/actions/PathActions";
 import {Add} from '@material-ui/icons';
 import {Fab} from '@material-ui/core'
 import {connect} from "react-redux";
+import FieldsSelectDialog from "./FieldsSelectDialog";
 
 const StyledStructureContainer = styled.div`
-    margin-top: 40px;
     display: flex;
     max-height: 300px;
     width: inherit;
@@ -17,8 +17,6 @@ const StyledStructureContainer = styled.div`
 `
 
 const StyledFab = styled(Fab)`
-    right: 20px;
-    bottom: 20px;
     position: fixed;
 `;
 
@@ -41,16 +39,22 @@ class StructurePage extends Component {
 
     render() {
         return (
-            <StyledStructureContainer style={{width: '100%'}}>
+            <Fragment>
                 <StyledStructureContainer>
                     {
                         this.props.path.openFields.map(field => <p>{field.alias}</p>)
                     }
                 </StyledStructureContainer>
-                <StyledFab>
+                <StyledFab onClick={this.openFieldsList}>
                     <Add/>
                 </StyledFab>
-            </StyledStructureContainer>
+                <FieldsSelectDialog
+                    open={this.state.fieldsDialogOpen}
+                    fields={this.props.path.openFields}
+                    onClose={this.closeFieldsList}
+                    onConfirm={this.props.addField}
+                />
+            </Fragment>
         );
     }
 }
