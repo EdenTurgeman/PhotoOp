@@ -1,6 +1,4 @@
 import React, {Component} from 'react';
-import styled from "styled-components";
-import {Card} from "@material-ui/core";
 import {
     Dialog,
     DialogActions,

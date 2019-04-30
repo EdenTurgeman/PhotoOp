@@ -15,7 +15,8 @@
     "react-scripts": "2.1.8",
     "recursive-readdir": "^2.2.2",
     "redux": "^4.0.1",
-    "styled-components": "^4.2.0"
+    "styled-components": "^4.2.0",
+    "prop-types": "latest"
   },
   "scripts": {
     "start": "react-scripts start",

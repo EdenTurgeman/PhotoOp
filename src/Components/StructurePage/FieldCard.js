@@ -14,7 +14,7 @@ class FieldCard extends Component {
         return (
             <GridListTile>
                 <StyledFolderCard>
-                    {this.props.name}
+                    {this.props.field.alias}
                 </StyledFolderCard>
             </GridListTile>
         );

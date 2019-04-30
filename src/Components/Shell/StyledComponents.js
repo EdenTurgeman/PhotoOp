@@ -12,7 +12,7 @@ export const StyledShell = styled.div`
 
 export const StyledContent = styled.div`
     display: flex;
-    height: calc(100% - 40px);
+    height: calc(100%);
     width: 100%;
     align-items: center;
     justify-content: flex-end;

@@ -13,7 +13,8 @@ const steps = [
     },
     {
         label: 'Folders',
-        component: <StructurePage/>
+        component: <StructurePage/>,
+        subText: 'Optional'
     },
     {
         label: 'Move',
@@ -50,12 +51,14 @@ class Shell extends Component {
                         {getStepComponent(this.state.activeStep)}
                     </StyledSlidesContainer>
                     <StyledStepperContainer>
-                        <Stepper nonLinear  style={{backgroundColor: "transparent"}}
+                        <Stepper nonLinear
+                                 style={{backgroundColor: "transparent"}}
                                  activeStep={this.state.activeStep}>
                             {
                                 steps.map((step, index) => {
                                     return <Step key={step.label}>
-                                        <StepButton optional={<Typography variant="caption">{step.subText}</Typography>} onClick={this.handleStep(index)}
+                                        <StepButton onClick={this.handleStep(index)}
+                                                    optional={<Typography variant="caption">{step.subText}</Typography>}
                                                     completed={this.state.completed[index]}>
                                             <StepLabel>{step.label}</StepLabel>
                                         </StepButton>

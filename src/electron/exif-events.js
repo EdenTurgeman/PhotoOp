@@ -27,7 +27,6 @@ const buildPathForFile = (usedFields, filePath, rootDestPath) => {
         .then((tags) => {
                 usedFields.forEach(field => {
                     const exifData = tags[field.exifName].toString();
-                    console.log(exifData);
                     if (exifData) {
                         fileDest = join(fileDest, exifData)
                     }
@@ -46,7 +45,6 @@ ipcMain.on('moveFiles', (event) => {
 });
 
 ipcMain.on('filesInFolder', (event, destPath) => {
-    console.log(destPath);
     recursive(destPath,(err, files) => {
         event.returnValue = files.length;
     })

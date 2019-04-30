@@ -1,10 +1,13 @@
 import React, {Component, Fragment} from 'react';
+import {connect} from "react-redux";
 import styled from 'styled-components';
-import {addField, removeField} from "../../Redux/actions/PathActions";
 import {Add} from '@material-ui/icons';
 import {Fab} from '@material-ui/core'
-import {connect} from "react-redux";
 import FieldsSelectDialog from "./FieldsSelectDialog";
+import {addField, removeField} from "../../Redux/actions/PathActions";
+import FieldCard from "./FieldCard";
+
+
 
 const StyledStructureContainer = styled.div`
     display: flex;
@@ -18,6 +21,7 @@ const StyledStructureContainer = styled.div`
 
 const StyledFab = styled(Fab)`
     position: fixed;
+    float: left;
 `;
 
 class StructurePage extends Component {
@@ -42,7 +46,7 @@ class StructurePage extends Component {
             <Fragment>
                 <StyledStructureContainer>
                     {
-                        this.props.path.usedFields.map(( field, index) => <p key={index}>{field.alias}</p>)
+                        this.props.path.usedFields.map(( field, index) => <FieldCard field={field} key={index}></FieldCard>)
                     }
                 </StyledStructureContainer>
                 <StyledFab onClick={this.openFieldsList}>
