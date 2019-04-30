@@ -1,44 +1,68 @@
 import React, {Component} from "react";
-import styled from "styled-components";
 import TitleBar from "../TitleBar/TitleBar";
 import PathPage from "../PathPage/PathPage";
-import {Route, Switch} from "react-router";
-import PageTransition from "react-router-page-transition";
 import StructurePage from "../StructurePage/StructurePage";
+import {Step, StepButton, StepLabel, Stepper} from "@material-ui/core";
+import {StyledContent, StyledShell, StyledSlidesContainer, StyledStepperContainer} from "./StyledComponents";
 
-const StyledShell = styled.div`
-    height: 100%;
-    width: 100%;
-    display: flex;
-    text-align: center;
-    justify-content: space-around;
-    align-items: center;
-    flex-flow: column;
-    overflow: auto;
-`;
-const StyledContent = styled.div`
-    margin-top: 40px;
-    justify-content: center;
-    height: 100%;
-    width: 100%;
-    display: flex;
-    overflow: auto;
-`;
+const steps = [
+    {
+        label: 'Path',
+        component: <PathPage/>
+    },
+    {
+        label: 'Structure',
+        component: <StructurePage/>
+    },
+    {
+        label: 'Move',
+        component: <dix/>
+    }
+];
+
+const getStepComponent = step => {
+    return steps[step].component;
+};
 
 class Shell extends Component {
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            activeStep: 0,
+            completed: [true, false]
+        }
+    }
+
+    handleStep = step => () => {
+        this.setState({
+            activeStep: step,
+        });
+    };
+
     render() {
         return (
             <StyledShell>
                 <TitleBar/>
                 <StyledContent>
-                    <Route render={({location}) => (
-                            <PageTransition timeout={500}>
-                                <Switch location={location}>
-                                    <Route exact path="/" component={PathPage}/>
-                                    <Route exact path="/tags" component={StructurePage}/>
-                                </Switch>
-                            </PageTransition>
-                        )}/>
+                    <StyledSlidesContainer>
+                        {getStepComponent(this.state.activeStep)}
+                    </StyledSlidesContainer>
+                    <StyledStepperContainer>
+                        <Stepper style={{backgroundColor: "transparent"}}
+                                 activeStep={this.state.activeStep}>
+                            {
+                                steps.map((step, index) => {
+                                    return <Step key={step.label}>
+                                        <StepButton onClick={this.handleStep(index)}
+                                                    completed={this.state.completed[index]}>
+                                            <StepLabel>{step.label}</StepLabel>
+                                        </StepButton>
+                                    </Step>
+                                })
+                            }
+                        </Stepper>
+                    </StyledStepperContainer>
                 </StyledContent>
             </StyledShell>
         )

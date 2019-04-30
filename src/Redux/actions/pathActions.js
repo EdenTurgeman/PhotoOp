@@ -12,7 +12,7 @@ export function setDest(destPath) {
 }
 
 export function addField(fieldName) {
-    return { type: ADD_FIELD, fieldName }
+    return { type: ADD_FIELD, fieldName: fieldName }
 }
 
 export function removeField(fieldName) {

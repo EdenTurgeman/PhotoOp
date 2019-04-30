@@ -1,14 +1,14 @@
-import React, {Component} from 'react';
+import React, {Component, Fragment} from 'react';
 import {connect} from "react-redux";
 import {setSrc, setDest} from "../../Redux/actions/PathActions";
 import {PathCard} from "./PathCard";
-import {Link} from "react-router-dom";
-import IconButton from "@material-ui/core/Button";
-import {StyledArrow, StyledPathContainer} from "./StyledComponents";
-import {StyledSlideContainer} from "../Common/StyledComponents";
-import '../../styles/transitions.css';
+import styled from "styled-components";
+import {ArrowDownward} from "@material-ui/icons";
 
-const {ipcRenderer} = window.require('electron');
+export const StyledArrow = styled(ArrowDownward)`
+    margin: 10px;
+    color: #9E9E9E;
+`;
 
 class PathPage extends Component {
     constructor(props) {
@@ -19,25 +19,13 @@ class PathPage extends Component {
         }
     }
 
-    componentDidMount() {
-        ipcRenderer.on('readFile-reply', (event, tags) => {
-            this.setState({
-                tags: tags
-            });
-        });
-    }
-
     render() {
         return (
-            <StyledSlideContainer className="transition-item from-page">
-                <StyledPathContainer>
+                <Fragment>
                     <PathCard setPath={this.props.setSrcPath} path={this.props.path.srcPath} text='Source'/>
-                    <IconButton component={Link} to={{pathname: '/tags', state: {prev: false},}}>
                         <StyledArrow fontSize='large'/>
-                    </IconButton>
                     <PathCard setPath={this.props.setDestPath} path={this.props.path.destPath} text='Destination'/>
-                </StyledPathContainer>
-            </StyledSlideContainer>
+                </Fragment>
         );
     }
 }
@@ -51,16 +39,19 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = dispatch => {
     return {
         setSrcPath: srcPath => {
-            dispatch(setSrc(srcPath[0]));
+            if (srcPath) {
+                dispatch(setSrc(srcPath[0]));
+            }
         },
         setDestPath: destPath => {
-            dispatch(setDest(destPath[0]));
+            if (destPath) {
+                dispatch(setDest(destPath[0]));
+            }
         },
     }
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(PathPage);
-
 
 
 /*

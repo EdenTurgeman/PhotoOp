@@ -1,33 +1,25 @@
 import React, {Component} from 'react';
-import {StyledSlideContainer} from "../Common/StyledComponents";
-import {addField, removeField} from "../../Redux/actions/PathActions";
-import {connect} from "react-redux";
 import styled from 'styled-components';
-import '../../styles/transitions.css';
-import FieldCard from "./FieldCard";
-import {Add} from '@material-ui/icons'
-import {
-    DialogTitle,
-    Dialog,
-    DialogContent,
-    DialogActions,
-    RadioGroup,
-    Radio,
-    Button,
-    FormControlLabel,
-    FormControl,
-    FormLabel,
-    IconButton
-} from "@material-ui/core";
-import FieldsSelectDialog from "./FieldsSelectDialog";
+import {addField, removeField} from "../../Redux/actions/PathActions";
+import {Add} from '@material-ui/icons';
+import {Fab} from '@material-ui/core'
+import {connect} from "react-redux";
 
-const StyledFieldsContainer = styled.div`
+const StyledStructureContainer = styled.div`
+    margin-top: 40px;
     display: flex;
-    width: 100%;
-    justify-content: space-evenly;
-    align-items: center;
+    max-height: 300px;
+    width: inherit;
     flex-flow: column;
+    justify-content: center;
+    align-items: center;
     overflow: auto;
+`
+
+const StyledFab = styled(Fab)`
+    right: 20px;
+    bottom: 20px;
+    position: fixed;
 `;
 
 class StructurePage extends Component {
@@ -39,10 +31,6 @@ class StructurePage extends Component {
         }
     }
 
-    addUsedField = () => {
-        this.props.addField('Shutter Speed');
-    };
-
     openFieldsList = () => {
         this.setState({fieldsDialogOpen: true});
     };
@@ -52,27 +40,17 @@ class StructurePage extends Component {
     };
 
     render() {
-        const usedFieldsList = this.props.path.usedFields.map(item => {
-            return (
-                <FieldCard key={item.alias} name={item.alias}/>
-            );
-        });
-
         return (
-            <StyledSlideContainer className="transition-item to-page">
-                <StyledFieldsContainer>
-                    {usedFieldsList}
-                    <IconButton onClick={this.openFieldsList}>
-                        <Add fontSize="large"/>
-                    </IconButton>
-                    <FieldsSelectDialog
-                        open={this.state.fieldsDialogOpen}
-                        fields={this.props.path.openFields}
-                        onClose={this.closeFieldsList}
-                        onConfirm={this.props.addField}
-                    />
-                </StyledFieldsContainer>
-            </StyledSlideContainer>
+            <StyledStructureContainer style={{width: '100%'}}>
+                <StyledStructureContainer>
+                    {
+                        this.props.path.openFields.map(field => <p>{field.alias}</p>)
+                    }
+                </StyledStructureContainer>
+                <StyledFab>
+                    <Add/>
+                </StyledFab>
+            </StyledStructureContainer>
         );
     }
 }

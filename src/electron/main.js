@@ -4,14 +4,26 @@ require('./exif-events');
 let win;
 
 function createWindow() {
-    win = new BrowserWindow({width: 450, height: 450, frame: false});
+    win = new BrowserWindow(
+        {
+            width: 450,
+            height: 450,
+            minHeight: 450,
+            minWidth: 450,
+            maxHeight: 650,
+            maxWidth: 650,
+            frame: false
+        });
+
     win.setMenuBarVisibility(false);
 
     win.loadURL('http://localhost:3000');
 
     win.webContents.openDevTools()
 
-    win.on('closed', () => {win = null})
+    win.on('closed', () => {
+        win = null
+    })
 }
 
 app.on('ready', () => {
