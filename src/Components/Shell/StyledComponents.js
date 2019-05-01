@@ -19,7 +19,7 @@ export const StyledContent = styled.div`
     flex-flow: column;
 `;
 
-export const StyledSlidesContainer = styled.div`
+export const StyledPagesContainer = styled.div`
     width: 100%;
     height: inherit;
     margin-top: 40px;

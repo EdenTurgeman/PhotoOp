@@ -7,8 +7,6 @@ import FieldsSelectDialog from "./FieldsSelectDialog";
 import {addField, removeField} from "../../Redux/actions/PathActions";
 import FieldCard from "./FieldCard";
 
-
-
 const StyledStructureContainer = styled.div`
     display: flex;
     max-height: 300px;
@@ -33,6 +31,12 @@ class StructurePage extends Component {
         }
     }
 
+    componentWillReceiveProps(nextProps, nextContext) {
+        if (this.props.path.usedFields.length === 0 && nextProps.path.usedFields.length > 0) {
+            nextProps.onComplete();
+        }
+    };
+
     openFieldsList = () => {
         this.setState({fieldsDialogOpen: true});
     };
@@ -46,7 +50,7 @@ class StructurePage extends Component {
             <Fragment>
                 <StyledStructureContainer>
                     {
-                        this.props.path.usedFields.map(( field, index) => <FieldCard field={field} key={index}></FieldCard>)
+                        this.props.path.usedFields.map((field, index) => <FieldCard field={field} key={index}/>)
                     }
                 </StyledStructureContainer>
                 <StyledFab onClick={this.openFieldsList}>

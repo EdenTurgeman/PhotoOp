@@ -8,12 +8,14 @@ const initState = {
     usedFields: []
 };
 
-const removeFieldByName = (array, fieldName) => {
-    const fieldIndex = array.findIndex((field) => field.alias === fieldName);
+const getFieldIndex = (array, fieldName) => {
+    return array.findIndex((field) => field.alias === fieldName);
+};
 
-    if (fieldIndex !== -1) {
-        return array.splice(fieldIndex, 1)[0];
-    }
+const filterFieldByIndex = (array, fieldIndex) => {
+    return array.filter((field, index) => {
+        return !(index === fieldIndex)
+    });
 };
 
 export const pathReducer = (state = initState, action) => {
@@ -35,23 +37,25 @@ export const pathReducer = (state = initState, action) => {
             break;
         }
         case ADD_FIELD: {
-            const usedField = removeFieldByName(state.openFields, action.fieldName);
+            const fieldIndex = getFieldIndex(state.openFields, action.fieldName);
 
-            if (usedField) {
+            if (fieldIndex !== -1) {
                 state = {
                     ...state,
-                    usedFields: state.usedFields.concat(usedField)
+                    usedFields: state.usedFields.concat(state.openFields[fieldIndex]),
+                    openFields: filterFieldByIndex(state.openFields, fieldIndex)
                 };
             }
             break;
         }
         case REMOVE_FIELD : {
-            const openedField = removeFieldByName(state.usedFields);
+            const fieldIndex = getFieldIndex(state.usedFields, action.fieldName);
 
-            if (openedField) {
+            if (fieldIndex !== -1) {
                 state = {
                     ...state,
-                    openFields: state.openFields.concat(openedField)
+                    openFields: state.openFields.concat(state.usedFields[fieldIndex]),
+                    usedFields: filterFieldByIndex(state.usedFields, fieldIndex)
                 };
             }
             break;

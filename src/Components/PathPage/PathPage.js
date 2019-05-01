@@ -18,13 +18,19 @@ class PathPage extends Component {
         }
     }
 
+    componentWillReceiveProps(nextProps, nextContext) {
+        if (nextProps.path.srcPath && nextProps.path.destPath) {
+            this.props.onComplete();
+        }
+    }
+
     render() {
         return (
-                <Fragment>
-                    <PathCard setPath={this.props.setSrcPath} path={this.props.path.srcPath} text='From'/>
-                        <StyledArrow fontSize='large'/>
-                    <PathCard setPath={this.props.setDestPath} path={this.props.path.destPath} text='To'/>
-                </Fragment>
+            <Fragment>
+                <PathCard setPath={this.props.setSrcPath} path={this.props.path.srcPath} text='From'/>
+                <StyledArrow fontSize='large'/>
+                <PathCard setPath={this.props.setDestPath} path={this.props.path.destPath} text='To'/>
+            </Fragment>
         );
     }
 }

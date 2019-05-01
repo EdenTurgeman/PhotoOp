@@ -25,15 +25,20 @@ class MovePage extends Component {
     }
 
     componentWillMount() {
+        this.subscribeToReplies();
+    }
+
+    subscribeToReplies = () => {
         ipcRenderer.on('moveFiles-reply', (event, arg) => {
-            console.log(arg)
             this.setState({
                 ...this.state,
                 loading: false,
                 success: true,
             });
+
+            this.props.onComplete();
         })
-    }
+    };
 
     handleToggleDialog = () => {
         this.setState({
@@ -60,12 +65,16 @@ class MovePage extends Component {
         }
     };
 
+    isPathSet = () => {
+        return !(this.props.path.srcPath && this.props.path.destPath);
+    };
+
     render() {
         const {classes} = this.props;
 
         return (
             <Fragment>
-                <StartBuildButton classes={classes}
+                <StartBuildButton disabled={this.isPathSet} classes={classes}
                                   onClick={this.handleToggleDialog}
                                   success={this.state.success}
                                   loading={this.state.loading}/>

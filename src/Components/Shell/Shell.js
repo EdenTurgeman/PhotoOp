@@ -1,24 +1,27 @@
-import React, {Component} from "react";
+import React, {Component, createElement} from "react";
 import TitleBar from "../TitleBar/TitleBar";
 import PathPage from "../PathPage/PathPage";
 import StructurePage from "../StructurePage/StructurePage";
 import MovePage from "../MovePage/MovePage";
 import {Step, StepButton, StepLabel, Stepper, Typography} from "@material-ui/core";
-import {StyledContent, StyledShell, StyledSlidesContainer, StyledStepperContainer} from "./StyledComponents";
+import {StyledContent, StyledShell, StyledPagesContainer, StyledStepperContainer} from "./StyledComponents";
 
 const steps = [
     {
         label: 'Location',
-        component: <PathPage/>
+        component: PathPage,
+        completed: false
     },
     {
         label: 'Folders',
-        component: <StructurePage/>,
-        subText: 'Optional'
+        component: StructurePage,
+        subText: 'Optional',
+        completed: false
     },
     {
         label: 'Move',
-        component: <MovePage/>
+        component: MovePage,
+        completed: false
     }
 ];
 
@@ -42,14 +45,35 @@ class Shell extends Component {
         });
     };
 
+    handleNextStep = () => {
+        if (this.state.activeStep < steps.length - 1) {
+            this.setState({
+                activeStep: this.state.activeStep + 1
+            });
+        }
+    };
+
+    onCompleteStep = stepIndex => {
+        if (!steps[stepIndex].completed) {
+            steps[stepIndex].completed = true;
+
+            if (stepIndex !== 1) {
+                this.handleNextStep();
+            }
+        }
+    };
+
     render() {
         return (
             <StyledShell>
                 <TitleBar/>
                 <StyledContent>
-                    <StyledSlidesContainer>
-                        {getStepComponent(this.state.activeStep)}
-                    </StyledSlidesContainer>
+                    <StyledPagesContainer>
+                        {createElement(getStepComponent(this.state.activeStep),
+                            {
+                                onComplete: () => this.onCompleteStep(this.state.activeStep)
+                            })}
+                    </StyledPagesContainer>
                     <StyledStepperContainer>
                         <Stepper nonLinear
                                  style={{backgroundColor: "transparent"}}
@@ -59,7 +83,7 @@ class Shell extends Component {
                                     return <Step key={step.label}>
                                         <StepButton onClick={this.handleStep(index)}
                                                     optional={<Typography variant="caption">{step.subText}</Typography>}
-                                                    completed={this.state.completed[index]}>
+                                                    completed={steps[index].completed}>
                                             <StepLabel>{step.label}</StepLabel>
                                         </StepButton>
                                     </Step>

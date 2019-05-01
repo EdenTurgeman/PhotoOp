@@ -34,7 +34,7 @@ const styles = theme => ({
 const StartBuildButton = props => {
     return (
         <div className={props.classes.wrapper}>
-            <Fab color="primary" className={props.classes.buttonSuccess} onClick={props.onClick}>
+            <Fab disabled={props.disabled()} color="primary" className={props.classes.buttonSuccess} onClick={props.onClick}>
                 {props.success ? <Check/> : <Save/>}
             </Fab>
             {props.loading && <CircularProgress size={68} className={props.classes.fabProgress}/>}
