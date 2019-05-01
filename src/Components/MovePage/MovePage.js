@@ -43,16 +43,14 @@ class MovePage extends Component {
     handleToggleDialog = () => {
         this.setState({
             ...this.state,
-            filesInFolder: ipcRenderer.sendSync('filesInFolder', this.props.path.destPath),
+            filesInFolder: ipcRenderer.sendSync('filesInFolder', this.props.path.srcPath),
             open: !this.state.open
         })
     };
 
     handleStartBuild = () => {
         if (!this.state.loading) {
-            this.setState(
-                {...this.state, loading: true,},
-                () => {
+            this.setState({...this.state, loading: true,}, () => {
                     this.handleToggleDialog();
 
                     ipcRenderer.send('moveFiles', {
