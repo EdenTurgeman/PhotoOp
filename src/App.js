@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import {BrowserRouter} from 'react-router-dom';
 import {Provider} from 'react-redux'
 import styled from "styled-components";
 
@@ -21,13 +20,11 @@ const StyledApp = styled.div`
 class App extends Component {
     render() {
         return (
-            <BrowserRouter>
-                <Provider store={store}>
-                    <StyledApp>
-                            <Shell/>
-                    </StyledApp>
-                </Provider>
-            </BrowserRouter>
+            <Provider store={store}>
+                <StyledApp>
+                    <Shell/>
+                </StyledApp>
+            </Provider>
         );
     }
 }

@@ -5,23 +5,14 @@
   "productName": "PhotoOp,",
   "main": "src/electron/main.js",
   "dependencies": {
-    "@material-ui/core": "^3.9.3",
-    "@material-ui/icons": "^3.0.2",
     "exiftool-vendored": "^8.9.0",
     "fs-extra": "^7.0.1",
-    "prop-types": "latest",
-    "react": "^16.8.6",
-    "react-dom": "^16.8.6",
-    "react-redux": "^7.0.3",
-    "react-router-dom": "^5.0.0",
-    "react-scripts": "2.1.8",
-    "recursive-readdir": "^2.2.2",
-    "redux": "^4.0.1",
-    "styled-components": "^4.2.0"
+    "recursive-readdir": "^2.2.2"
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build",
+    "build": "react-scripts build electron-builder build",
+    "build-electron": "react-scripts build && electron-builder build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "electron": "electron ./src/electron/main.js"
@@ -36,7 +27,76 @@
     "not op_mini all"
   ],
   "devDependencies": {
-    "@babel/register": "^7.4.4",
-    "electron-packager": "^13.1.1"
-  }
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6",
+    "redux": "^4.0.1",
+    "react-redux": "^7.0.3",
+    "@material-ui/core": "^3.9.3",
+    "@material-ui/icons": "^3.0.2",
+    "styled-components": "^4.2.0",
+    "babel-core": "^6.26.3",
+    "electron-builder": "^20.39.0",
+    "typescript": "^3.4.5",
+    "prop-types": "latest",
+    "@babel/register": "^7.4.4"
+  },
+  "build": {
+    "productName": "PhotoOp",
+    "appId": "com.et.photoOp",
+    "files": [
+      "./build/",
+      "./src/electron/",
+      "./src/assets/",
+      "package.json"
+    ],
+    "extends": null,
+    "compression": "maximum",
+    "dmg": {
+      "contents": [
+        {
+          "x": 130,
+          "y": 220
+        },
+        {
+          "x": 410,
+          "y": 220,
+          "type": "link",
+          "path": "/Applications"
+        }
+      ]
+    },
+    "win": {
+      "target": [
+        "nsis"
+      ]
+    },
+    "linux": {
+      "target": [
+        "deb",
+        "AppImage"
+      ],
+      "category": "Development"
+    },
+    "directories": {
+      "buildResources": "resources",
+      "output": "release"
+    }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/EdenTurgeman/PhotoOp"
+  },
+  "author": {
+    "name": "Eden Turgeman",
+    "email": "edmx0.et@gmail.com",
+    "url": "https://github.com/EdenTurgeman/"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/EdenTurgeman/PhotoOp"
+  },
+  "keywords": [
+    "electron"
+  ],
+  "homepage": "https://github.com/EdenTurgeman/PhotoOp"
 }

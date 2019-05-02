@@ -28,7 +28,7 @@ const buildPathForFile = (usedFields, filePath, rootDestPath) => {
 
             return fileDest;
         })
-        .catch(err => console.error("Something terrible happened, Could not read file data: ", err));
+        .catch(err => console.log(err));
 };
 
 
@@ -36,15 +36,19 @@ ipcMain.on('moveFiles', (event, {srcPath, destPath, usedFields}) => {
     const filePromises = [];
 
     recursive(srcPath, (err, files) => {
-        files.forEach(file => {
-            const relativeFilePath = relative(process.cwd(), file);
+        try {
+            files.forEach(file => {
+                const relativeFilePath = relative(process.cwd(), file);
 
-            filePromises.push(buildPathForFile(usedFields, relativeFilePath, destPath)
-                .then(fileDestPath => {
-                    ensureDirSync(fileDestPath);
-                    moveSync(relativeFilePath, join(fileDestPath, basename(file)));
-                }));
-        });
+                filePromises.push(buildPathForFile(usedFields, relativeFilePath, destPath)
+                    .then(fileDestPath => {
+                        ensureDirSync(fileDestPath);
+                        moveSync(relativeFilePath, join(fileDestPath, basename(file)));
+                    }));
+            });
+        } catch (error) {
+            event.sender.send('error', error)
+        }
 
         Promise.all(filePromises).then(() => event.sender.send('moveFiles-reply'));
     })

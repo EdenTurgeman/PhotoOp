@@ -6,6 +6,8 @@ import MovePage from "../MovePage/MovePage";
 import {Step, StepButton, StepLabel, Stepper, Typography} from "@material-ui/core";
 import {StyledContent, StyledShell, StyledPagesContainer, StyledStepperContainer} from "./StyledComponents";
 
+const {ipcRenderer} = window.require('electron');
+
 const steps = [
     {
         label: 'Location',
@@ -37,6 +39,12 @@ class Shell extends Component {
             activeStep: 0,
             completed: [false, false]
         }
+    }
+
+    componentWillMount() {
+        ipcRenderer.on('error',(event, error) => {
+            console.log(error);
+        })
     }
 
     handleStep = step => () => {

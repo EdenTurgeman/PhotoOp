@@ -19,8 +19,6 @@ const filterFieldByIndex = (array, fieldIndex) => {
 };
 
 export const pathReducer = (state = initState, action) => {
-    console.log(action);
-
     switch (action.type) {
         case SET_SRC: {
             state = {
