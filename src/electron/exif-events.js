@@ -1,16 +1,45 @@
 const {ipcMain} = require('electron');
 const {exiftool} = require('exiftool-vendored');
 const recursive = require("recursive-readdir");
-const {basename, join, relative} = require('path');
+const {extname, basename, join, relative} = require('path');
 const {moveSync, ensureDirSync} = require('fs-extra');
-const cameraFields = require('../assets/camera-fields-map');
 
-const getExtensions = files => {
-    return files.filter((file, pos) => {
-        return files.indexOf(file) === pos;
-    }).map(file => {
-        return file.replace('.', '');
-    })
+// Node doesn't ship with the conversion method of month to text and i don't want to install another module due to package size.
+const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+
+const getExtension = file => {
+    return extname(file).replace('.', '');
+};
+
+const getDateInfo = (field, tags) => {
+    return new Date(tags[field.exifName])
+};
+
+const handleUserField = (field, tags, filePath) => {
+    switch (field.id) {
+        case "Day": {
+            return getDateInfo(field, tags).getDate().toString();
+        }
+        case "Month" : {
+            return months[getDateInfo(field, tags).getMonth()];
+        }
+        case "Year": {
+            return getDateInfo(field, tags).getFullYear().toString();
+        }
+        case "FileType": {
+            return (getExtension(filePath));
+        }
+    }
+};
+
+const handleExifField = (field, tags) => {
+    const exifData = tags[field.exifName].toString().replace(/\//g, "`");
+
+    if (exifData) {
+        return exifData;
+    }
+
+    throw 'Exif field not found';
 };
 
 const buildPathForFile = (usedFields, filePath, rootDestPath) => {
@@ -20,10 +49,9 @@ const buildPathForFile = (usedFields, filePath, rootDestPath) => {
         .read(filePath)
         .then((tags) => {
             usedFields.forEach(field => {
-                const exifData = tags[field.exifName].toString().replace(/\//g, "`");
-                if (exifData) {
-                    fileDest = join(fileDest, exifData)
-                }
+                const pathAddition = field.userField ? handleUserField(field, tags, filePath) : handleExifField(field, tags);
+
+                fileDest = join(fileDest, pathAddition)
             });
 
             return fileDest;

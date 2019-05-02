@@ -4,10 +4,6 @@
     "alias": "Aperture"
   },
   {
-    "exifName": "Directory",
-    "alias": "Directory"
-  },
-  {
     "exifName": "ShutterSpeed",
     "alias": "Shutter Speed"
   },
@@ -24,7 +20,7 @@
     "alias": "MegaPixels"
   },
   {
-    "exifName": ["LensModel","LensInfo"],
+    "exifName": "LensModel",
     "alias": "Lens Type"
   },
   {
@@ -40,30 +36,31 @@
     "alias": "Focal Length"
   },
   {
-    "exifName": "FileName",
-    "alias": "File Name"
-  },
-  {
-    "exifName": "FileCreateDate",
-    "alias": "Year",
+    "exifName": "DateTimeOriginal",
+    "id": "Year",
+    "alias": "Year Taken",
     "userField": true
   },
   {
-    "exifName": "FileCreateDate",
-    "alias": "Month",
+    "exifName": "DateTimeOriginal",
+    "id": "Month",
+    "alias": "Month Taken",
     "userField": true
   },
   {
-    "exifName": "FileCreateDate",
+    "exifName": "DateTimeOriginal",
+    "id": "Day",
     "alias": "Day Of Month",
     "userField": true
   },
   {
     "alias": "Project Name",
+    "id": "ProjectName",
     "userField": true
   },
   {
     "alias": "File Type",
+    "id": "FileType",
     "userField": true
   }
 ]
