@@ -1,9 +1,11 @@
 const {app, BrowserWindow} = require('electron');
+const {join} = require('path');
 require('./exif-events');
 
 let win;
 
 function createWindow() {
+    const isDev = !app.isPackaged;
     win = new BrowserWindow(
         {
             width: 450,
@@ -15,11 +17,13 @@ function createWindow() {
             frame: false
         });
 
+    win.loadURL(isDev ? 'http://localhost:3000' : join(__dirname, '../../build/index.html'));
+
     win.setMenuBarVisibility(false);
 
-    win.loadURL('http://localhost:3000');
-
-    win.webContents.openDevTools()
+    if (isDev) {
+        win.webContents.openDevTools();
+    }
 
     win.on('closed', () => {
         win = null

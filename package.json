@@ -11,8 +11,9 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build electron-builder build",
-    "build-electron": "react-scripts build && electron-builder build",
+    "build": "react-scripts build",
+    "build-electron": "electron-builder build",
+    "build-app": "react-scripts build && electron-builder build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "electron": "electron ./src/electron/main.js"
@@ -27,24 +28,26 @@
     "not op_mini all"
   ],
   "devDependencies": {
-    "react": "^16.8.6",
-    "react-dom": "^16.8.6",
-    "redux": "^4.0.1",
-    "react-redux": "^7.0.3",
+    "@babel/register": "^7.4.4",
     "@material-ui/core": "^3.9.3",
     "@material-ui/icons": "^3.0.2",
-    "styled-components": "^4.2.0",
     "babel-core": "^6.26.3",
     "electron-builder": "^20.39.0",
-    "typescript": "^3.4.5",
     "prop-types": "latest",
-    "@babel/register": "^7.4.4"
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6",
+    "react-redux": "^7.0.3",
+    "react-scripts": "^3.0.0",
+    "redux": "^4.0.1",
+    "styled-components": "^4.2.0",
+    "typescript": "^3.4.5"
   },
   "build": {
+    "asar": true,
     "productName": "PhotoOp",
     "appId": "com.et.photoOp",
     "files": [
-      "./build/",
+      "build/",
       "./src/electron/",
       "./src/assets/",
       "package.json"
@@ -78,13 +81,8 @@
       "category": "Development"
     },
     "directories": {
-      "buildResources": "resources",
       "output": "release"
     }
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/EdenTurgeman/PhotoOp"
   },
   "author": {
     "name": "Eden Turgeman",
@@ -92,11 +90,8 @@
     "url": "https://github.com/EdenTurgeman/"
   },
   "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/EdenTurgeman/PhotoOp"
-  },
   "keywords": [
     "electron"
   ],
-  "homepage": "https://github.com/EdenTurgeman/PhotoOp"
+  "homepage": "./"
 }

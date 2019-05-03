@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import styled from "styled-components";
 import {GridListTile, Card} from "@material-ui/core";
+import {ArrowDownward} from "@material-ui/icons";
 
 const StyledFolderCard = styled(Card)`
     text-align: center;
@@ -16,6 +17,7 @@ class FieldCard extends Component {
                 <StyledFolderCard>
                     {this.props.field.alias}
                 </StyledFolderCard>
+                <ArrowDownward/>
             </GridListTile>
         );
     }
