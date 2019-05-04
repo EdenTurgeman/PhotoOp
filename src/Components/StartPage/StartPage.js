@@ -5,17 +5,21 @@ import {withStyles} from '@material-ui/core';
 import {connect} from "react-redux";
 import BuildConfirmationDialog from "./BuildConfirmationDialog";
 import StartBuildButton from "./StartBuildButton";
+import {
+    setProcessEnded,
+    setProcessNotSuccess,
+    setProcessStarted,
+    setProcessSuccess,
+} from "../../Redux/actions/MoveActions";
 
 const {ipcRenderer} = window.require('electron');
 
-class MovePage extends Component {
+class StartPage extends Component {
     constructor(props) {
         super(props);
 
         this.state = {
             filesInFolder: 0,
-            loading: false,
-            success: false,
             open: false
         };
     }
@@ -30,12 +34,8 @@ class MovePage extends Component {
 
     subscribeToReplies = () => {
         ipcRenderer.on('moveFiles-reply', (event, arg) => {
-            this.setState({
-                ...this.state,
-                loading: false,
-                success: true,
-            });
-
+            this.props.setProcessEnded();
+            this.props.setProcessSuccess();
             this.props.onComplete();
         })
     };
@@ -49,17 +49,16 @@ class MovePage extends Component {
     };
 
     handleStartBuild = () => {
-        if (!this.state.loading) {
-            this.setState({...this.state, loading: true,}, () => {
-                    this.handleToggleDialog();
-
-                    ipcRenderer.send('moveFiles', {
-                        usedFields: this.props.path.usedFields,
-                        srcPath: this.props.path.srcPath,
-                        destPath: this.props.path.destPath
-                    });
+        if (!this.props.move.processRunning) {
+            this.handleToggleDialog();
+            ipcRenderer.send('moveFiles', {
+                    usedFields: this.props.path.usedFields,
+                    srcPath: this.props.path.srcPath,
+                    destPath: this.props.path.destPath
                 },
             );
+
+            this.props.setProcessStarted();
         }
     };
 
@@ -74,12 +73,12 @@ class MovePage extends Component {
             <Fragment>
                 <StartBuildButton disabled={this.isPathSet} classes={classes}
                                   onClick={this.handleToggleDialog}
-                                  success={this.state.success}
-                                  loading={this.state.loading}/>
+                                  success={this.props.move.processSuccess}
+                                  loading={this.props.move.processRunning}/>
                 <BuildConfirmationDialog open={this.state.open} onClose={this.handleClose}
                                          filesInFolder={this.state.filesInFolder}
                                          onClick={this.handleToggleDialog}
-                                         onClick1={this.handleStartBuild}/>
+                                         onConfirm={this.handleStartBuild}/>
             </Fragment>
         );
     }
@@ -87,8 +86,26 @@ class MovePage extends Component {
 
 const mapStateToProps = (state) => {
     return {
-        path: state.path
+        path: state.path,
+        move: state.move
     }
 };
 
-export default connect(mapStateToProps)(MovePage);
+const mapDispatchToProps = dispatch => {
+    return {
+        setProcessStarted: () => {
+            dispatch(setProcessStarted());
+        },
+        setProcessSuccess: () => {
+            dispatch(setProcessSuccess());
+        },
+        setProcessNotSuccess: () => {
+            dispatch(setProcessNotSuccess());
+        },
+        setProcessEnded: () => {
+            dispatch(setProcessEnded());
+        }
+    }
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(StartPage);

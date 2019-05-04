@@ -2,9 +2,10 @@ import React, {Component, createElement} from "react";
 import TitleBar from "../TitleBar/TitleBar";
 import PathPage from "../PathPage/PathPage";
 import StructurePage from "../StructurePage/StructurePage";
-import MovePage from "../MovePage/MovePage";
+import StartPage from "../StartPage/StartPage";
 import {Step, StepButton, StepLabel, Stepper, Typography} from "@material-ui/core";
 import {StyledContent, StyledShell, StyledPagesContainer, StyledStepperContainer} from "./StyledComponents";
+import ErrorDialog from "../ErrorNotification/ErrorDialog";
 
 const {ipcRenderer} = window.require('electron');
 
@@ -21,8 +22,8 @@ const steps = [
         completed: false
     },
     {
-        label: 'Move',
-        component: MovePage,
+        label: 'Start',
+        component: StartPage,
         completed: false
     }
 ];
@@ -37,13 +38,19 @@ class Shell extends Component {
 
         this.state = {
             activeStep: 0,
-            completed: [false, false]
+            completed: [false, false],
+            errorDialogOpen: false,
+            error: {}
         }
     }
 
     componentWillMount() {
         ipcRenderer.on('error',(event, error) => {
-            console.log(error);
+            this.setState({
+                ...this.state,
+                errorDialogOpen: true,
+                error
+            })
         })
     }
 
@@ -69,6 +76,14 @@ class Shell extends Component {
                 this.handleNextStep();
             }
         }
+    };
+
+    closeErrorDialog = () => {
+        this.setState({
+            ...this.state,
+            errorDialogOpen: false,
+            error: {}
+        })
     };
 
     render() {
@@ -100,6 +115,7 @@ class Shell extends Component {
                         </Stepper>
                     </StyledStepperContainer>
                 </StyledContent>
+                <ErrorDialog open={this.state.errorDialogOpen} onClose={this.closeErrorDialog} error={this.state.error}/>
             </StyledShell>
         )
     }

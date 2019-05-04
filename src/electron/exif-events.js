@@ -7,6 +7,13 @@ const {moveSync, ensureDirSync} = require('fs-extra');
 // Node doesn't ship with the conversion method of month to text and i don't want to install another module due to package size.
 const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
+const createError = (text, error) => {
+    return {
+        text,
+        error
+    }
+};
+
 const getExtension = file => {
     return extname(file).replace('.', '');
 };
@@ -33,13 +40,17 @@ const handleUserField = (field, tags, filePath) => {
 };
 
 const handleExifField = (field, tags) => {
-    const exifData = tags[field.exifName].toString().replace(/\//g, "`");
+    const exifField = field.exifName.find(exifName => {
+        return tags[exifName] !== undefined;
+    });
 
-    if (exifData) {
+    const exifData = tags[exifField];
+
+    if (exifData !== undefined) {
         return exifData;
     }
 
-    throw 'Exif field not found';
+    throw createError("We're sorry " + field.alias + " is not supported by your images.", "this no tag matching" + JSON.stringify(tags));
 };
 
 const buildPathForFile = (usedFields, filePath, rootDestPath) => {
@@ -51,35 +62,35 @@ const buildPathForFile = (usedFields, filePath, rootDestPath) => {
             usedFields.forEach(field => {
                 const pathAddition = field.userField ? handleUserField(field, tags, filePath) : handleExifField(field, tags);
 
-                fileDest = join(fileDest, pathAddition)
+                fileDest = join(fileDest, pathAddition.toString())
             });
 
             return fileDest;
         })
-        .catch(err => console.log(err));
 };
 
 
 ipcMain.on('moveFiles', (event, {srcPath, destPath, usedFields}) => {
     const filePromises = [];
+    try {
+        recursive(srcPath, (err, files) => {
+            files.forEach(filePath => {
+                const relativeFilePath = relative(process.cwd(), filePath);
 
-    recursive(srcPath, (err, files) => {
-        try {
-            files.forEach(file => {
-                const relativeFilePath = relative(process.cwd(), file);
-
-                filePromises.push(buildPathForFile(usedFields, relativeFilePath, destPath)
+                const finalFilePath = buildPathForFile(usedFields, relativeFilePath, destPath)
                     .then(fileDestPath => {
                         ensureDirSync(fileDestPath);
-                        moveSync(relativeFilePath, join(fileDestPath, basename(file)));
-                    }));
-            });
-        } catch (error) {
-            event.sender.send('error', error)
-        }
+                        moveSync(relativeFilePath, join(fileDestPath, basename(filePath)));
+                    }).catch(error => event.sender.send('error', error));
 
-        Promise.all(filePromises).then(() => event.sender.send('moveFiles-reply'));
-    })
+                filePromises.push(finalFilePath);
+            });
+
+            Promise.all(filePromises).then(() => event.sender.send('moveFiles-reply'));
+        })
+    } catch {
+        return (error) => event.sender.send('error', error)
+    }
 });
 
 ipcMain.on('filesInFolder', (event, srcPath) => {

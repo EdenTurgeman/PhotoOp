@@ -1,66 +1,66 @@
 [
   {
-    "exifName": "Aperture",
-    "alias": "Aperture"
-  },
-  {
-    "exifName": "ShutterSpeed",
-    "alias": "Shutter Speed"
-  },
-  {
-    "exifName": "Rating",
-    "alias": "Photo Rating"
-  },
-  {
-    "exifName": "Model",
-    "alias": "Camera Type"
-  },
-  {
-    "exifName": "Megapixels",
-    "alias": "MegaPixels"
-  },
-  {
-    "exifName": "LensModel",
-    "alias": "Lens Type"
-  },
-  {
-    "exifName": "ImageSize",
-    "alias": "Resolution"
-  },
-  {
-    "exifName": "ISO",
-    "alias": "ISO"
-  },
-  {
-    "exifName": "FocalLength",
-    "alias": "Focal Length"
-  },
-  {
-    "exifName": "DateTimeOriginal",
+    "exifName": ["DateTimeOriginal"],
     "id": "Year",
     "alias": "Year Taken",
     "userField": true
   },
   {
-    "exifName": "DateTimeOriginal",
+    "exifName": ["DateTimeOriginal"],
     "id": "Month",
     "alias": "Month Taken",
     "userField": true
   },
   {
-    "exifName": "DateTimeOriginal",
+    "alias": "File Type",
+    "id": "FileType",
+    "userField": true
+  },
+  {
+    "exifName": ["LensModel", "LensSpec"],
+    "alias": "Lens Type"
+  },
+  {
+    "exifName": ["Aperture", "TargetAperture", "ApertureValue"],
+    "alias": "Aperture"
+  },
+  {
+    "exifName": ["ExposureTime","ShutterSpeed"],
+    "alias": "Shutter Speed"
+  },
+  {
+    "exifName": ["Rating"],
+    "alias": "Photo Rating"
+  },
+  {
+    "exifName": ["Model"],
+    "alias": "Camera Type"
+  },
+  {
+    "exifName": ["Megapixels"],
+    "alias": "MegaPixels"
+  },
+  {
+    "exifName": ["ImageSize"],
+    "alias": "Resolution"
+  },
+  {
+    "exifName": ["ISO"],
+    "alias": "ISO"
+  },
+  {
+    "exifName": ["FocalLength"],
+    "alias": "Focal Length"
+  },
+  {
+    "exifName": ["DateTimeOriginal"],
     "id": "Day",
     "alias": "Day Of Month",
     "userField": true
   },
   {
-    "alias": "Project Name",
+    "alias": ["Project Name"],
     "id": "ProjectName",
-    "userField": true
-  },
-  {
-    "alias": "File Type",
-    "id": "FileType",
     "userField": true
   }
 ]

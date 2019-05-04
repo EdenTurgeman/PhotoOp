@@ -1,4 +1,4 @@
-import React, {Component} from "react";
+import React from "react";
 import {Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle} from "@material-ui/core";
 import * as PropTypes from "prop-types";
 
@@ -18,7 +18,7 @@ const BuildConfirmationDialog = props => {
                 <Button onClick={props.onClick} color="primary">
                     Cancel
                 </Button>
-                <Button onClick={props.onClick1} color="primary" autoFocus>
+                <Button onClick={props.onConfirm} color="primary" autoFocus>
                     Confirm
                 </Button>
             </DialogActions>

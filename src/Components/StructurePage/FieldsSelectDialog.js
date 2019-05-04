@@ -41,7 +41,7 @@ class FieldsSelectDialog extends Component {
             <Dialog
                 disableBackdropClick
                 disableEscapeKeyDown
-                maxWidth="xs"
+                maxWidth="md"
                 open={this.props.open}
                 onEntering={this.handleEntering}>
                 <DialogTitle>Select Field</DialogTitle>
