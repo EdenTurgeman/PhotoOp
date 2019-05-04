@@ -62,3 +62,4 @@ typings/
 /.idea/
 /build/
 /release/
+/src/assets/camera-exif-data/

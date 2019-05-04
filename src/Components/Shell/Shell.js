@@ -71,10 +71,6 @@ class Shell extends Component {
     onCompleteStep = stepIndex => {
         if (!steps[stepIndex].completed) {
             steps[stepIndex].completed = true;
-
-            if (stepIndex !== 1) {
-                this.handleNextStep();
-            }
         }
     };
 

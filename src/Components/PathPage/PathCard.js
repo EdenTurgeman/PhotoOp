@@ -6,7 +6,7 @@ import Button from "@material-ui/core/Button";
 const {dialog} = window.require('electron').remote;
 
 const StyledPathCard = styled(Card)`
-    width: 300px;
+    width: 70%;
     height: 50px;  
     padding: 5px;
     display: flex;
