@@ -32,12 +32,15 @@ const styles = theme => ({
 });
 
 const StartBuildButton = props => {
+    const normaliseProgress = () => props.success ? props.filesInFolder : (props.filesDone) * 100 / (props.filesInFolder - 0);
+
     return (
+
         <div className={props.classes.wrapper}>
             <Fab disabled={props.disabled()} color="primary" className={props.classes.buttonSuccess} onClick={props.onClick}>
                 {props.success ? <Check/> : <Save/>}
             </Fab>
-            {props.loading && <CircularProgress size={68} className={props.classes.fabProgress}/>}
+            {props.loading && <CircularProgress disableShrink variant="determinate" size={68} className={props.classes.fabProgress} value={normaliseProgress()}/>}
         </div>
     )
 };

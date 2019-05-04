@@ -10,7 +10,8 @@ export const moveReducer = (state = initState, action) => {
         case SET_PROCESS_STARTED: {
             state = {
                 ...state,
-                processRunning: true
+                processRunning: true,
+                processSuccess: false
             };
             break;
         }

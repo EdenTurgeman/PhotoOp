@@ -1,7 +1,4 @@
 import React, {Component, Fragment} from 'react';
-import styled from "styled-components";
-import green from '@material-ui/core/colors/green';
-import {withStyles} from '@material-ui/core';
 import {connect} from "react-redux";
 import BuildConfirmationDialog from "./BuildConfirmationDialog";
 import StartBuildButton from "./StartBuildButton";
@@ -20,6 +17,7 @@ class StartPage extends Component {
 
         this.state = {
             filesInFolder: 0,
+            filesDone: 0,
             open: false
         };
     }
@@ -29,6 +27,10 @@ class StartPage extends Component {
     }
 
     componentWillMount() {
+        this.setState({
+            ...this.state,
+            filesInFolder: ipcRenderer.sendSync('filesInFolder', this.props.path.srcPath)
+        });
         this.subscribeToReplies();
     }
 
@@ -37,13 +39,19 @@ class StartPage extends Component {
             this.props.setProcessEnded();
             this.props.setProcessSuccess();
             this.props.onComplete();
-        })
+        });
+
+        ipcRenderer.on('progress-report', (event, filesDone) => {
+            this.setState({
+                ...this.state,
+                filesDone: filesDone
+            })
+        });
     };
 
     handleToggleDialog = () => {
         this.setState({
             ...this.state,
-            filesInFolder: ipcRenderer.sendSync('filesInFolder', this.props.path.srcPath),
             open: !this.state.open
         })
     };
@@ -74,7 +82,16 @@ class StartPage extends Component {
                 <StartBuildButton disabled={this.isPathSet} classes={classes}
                                   onClick={this.handleToggleDialog}
                                   success={this.props.move.processSuccess}
-                                  loading={this.props.move.processRunning}/>
+                                  loading={this.props.move.processRunning}
+                                  filesInFolder={this.state.filesInFolder}
+                                  filesDone={this.state.filesDone}
+                />
+                <div>
+                    {
+                        (this.props.move.processSuccess || this.props.move.processRunning) &&
+                        ((!this.props.move.processSuccess ? this.state.filesDone : this.state.filesInFolder) + " of " + this.state.filesInFolder)
+                    }
+                </div>
                 <BuildConfirmationDialog open={this.state.open} onClose={this.handleClose}
                                          filesInFolder={this.state.filesInFolder}
                                          onClick={this.handleToggleDialog}

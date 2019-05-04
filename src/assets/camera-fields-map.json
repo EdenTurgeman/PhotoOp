@@ -25,7 +25,7 @@
     "alias": "Aperture"
   },
   {
-    "exifName": ["ExposureTime","ShutterSpeed"],
+    "exifName": ["ExposureTime", "ShutterSpeed"],
     "alias": "Shutter Speed"
   },
   {

@@ -1,6 +1,6 @@
 {
   "name": "photo-op",
-  "version": "0.1.0",
+  "version": "0.6.5",
   "private": true,
   "productName": "PhotoOp,",
   "main": "src/electron/main.js",
@@ -46,6 +46,7 @@
     "asar": true,
     "productName": "PhotoOp",
     "appId": "com.et.photoOp",
+    "electronVersion": "4.1.2",
     "files": [
       "build/",
       "./src/electron/",

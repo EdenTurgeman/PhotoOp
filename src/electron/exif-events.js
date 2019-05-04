@@ -74,14 +74,18 @@ ipcMain.on('moveFiles', (event, {srcPath, destPath, usedFields}) => {
     const filePromises = [];
     try {
         recursive(srcPath, (err, files) => {
-            files.forEach(filePath => {
+            files.forEach((filePath, index) => {
                 const relativeFilePath = relative(process.cwd(), filePath);
 
                 const finalFilePath = buildPathForFile(usedFields, relativeFilePath, destPath)
                     .then(fileDestPath => {
                         ensureDirSync(fileDestPath);
                         moveSync(relativeFilePath, join(fileDestPath, basename(filePath)));
-                    }).catch(error => event.sender.send('error', error));
+
+                    }).then(() => {
+                            event.sender.send('progress-report', index);
+                        }
+                    ).catch(error => event.sender.send('error', error));
 
                 filePromises.push(finalFilePath);
             });
@@ -95,6 +99,6 @@ ipcMain.on('moveFiles', (event, {srcPath, destPath, usedFields}) => {
 
 ipcMain.on('filesInFolder', (event, srcPath) => {
     recursive(srcPath, (err, files) => {
-        event.returnValue = files.length;
-    })
+        event.returnValue = files ? files.length : 0;
+    });
 });
