@@ -2,22 +2,23 @@ import React, {Component, Fragment} from 'react';
 import {connect} from "react-redux";
 import styled from 'styled-components';
 import {Add} from '@material-ui/icons';
-import {Fab, GridList} from '@material-ui/core'
+import {Fab, List} from '@material-ui/core'
 import FieldsSelectDialog from "./FieldsSelectDialog";
 import {addField, removeField} from "../../Redux/actions/PathActions";
 import FieldCard from "./FieldCard";
 
-const StyledStructureContainer = styled(GridList)`
+const StyledStructureContainer = styled(List)`
     display: flex;
     max-height: 300px;
     width: inherit;
-    flex-flow: column wrap;
+    flex-flow: row wrap;
     justify-content: center;
     align-items: center;
-    overflow-y: auto;
+    overflow: auto;
 `;
 
 const StyledFab = styled(Fab)`
+    background-color: #F9AA33;
     position: fixed;
     float: left;
 `;

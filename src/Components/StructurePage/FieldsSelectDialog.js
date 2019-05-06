@@ -1,14 +1,21 @@
 import React, {Component} from 'react';
 import {
+    withStyles,
+    Button,
     Dialog,
     DialogActions,
     DialogContent,
     DialogTitle,
-    RadioGroup,
     FormControlLabel,
-    Button,
-    Radio
+    Radio,
+    RadioGroup
 } from "@material-ui/core";
+
+const styles = theme => ({
+    dialog: {
+        width: '50%',
+    },
+});
 
 class FieldsSelectDialog extends Component {
     constructor(props) {
@@ -43,7 +50,8 @@ class FieldsSelectDialog extends Component {
                 disableEscapeKeyDown
                 maxWidth="md"
                 open={this.props.open}
-                onEntering={this.handleEntering}>
+                onEntering={this.handleEntering}
+                classes={{paper: this.props.classes.dialog}}>
                 <DialogTitle>Select Field</DialogTitle>
                 <DialogContent>
                     <RadioGroup
@@ -74,4 +82,4 @@ class FieldsSelectDialog extends Component {
     }
 }
 
-export default FieldsSelectDialog;
+export default withStyles(styles)(FieldsSelectDialog);

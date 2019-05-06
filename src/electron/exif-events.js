@@ -50,7 +50,7 @@ const handleExifField = (field, tags) => {
         return exifData;
     }
 
-    throw createError("We're sorry " + field.alias + " is not supported by your images.", "this no tag matching" + JSON.stringify(tags));
+    throw createError("We're sorry " + field.alias + " is not supported by your images. Unsupported Files will not be transferred.", "this no tag matching" + JSON.stringify(tags));
 };
 
 const buildPathForFile = (usedFields, filePath, rootDestPath) => {

@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import styled from "styled-components";
-import {GridListTile, Card} from "@material-ui/core";
-import {ArrowDownward} from "@material-ui/icons";
+import {Card, ListItem} from "@material-ui/core";
+import {ArrowDownward} from "@material-ui/icons"
 
 const StyledFolderCard = styled(Card)`
     text-align: center;
@@ -10,15 +10,21 @@ const StyledFolderCard = styled(Card)`
     margin-top: 10px;
 `;
 
+
+const StyledFieldItem = styled(ListItem)`
+    display: flex;
+    flex-flow: column;
+`;
+
 class FieldCard extends Component {
     render() {
         return (
-            <GridListTile>
+            <StyledFieldItem>
                 <StyledFolderCard>
                     {this.props.field.alias}
                 </StyledFolderCard>
                 <ArrowDownward/>
-            </GridListTile>
+            </StyledFieldItem>
         );
     }
 }

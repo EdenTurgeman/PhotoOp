@@ -2,27 +2,29 @@ import React from "react";
 import {CircularProgress, Fab, withStyles} from "@material-ui/core";
 import {Check, Save} from "@material-ui/icons";
 import * as PropTypes from "prop-types";
-import green from "@material-ui/core/colors/green";
 
 const styles = theme => ({
     wrapper: {
         position: 'relative',
     },
+    wrapperLoading:{
+        marginTop: '100px'
+    },
     buttonSuccess: {
-        backgroundColor: green[500],
+        backgroundColor: theme.palette.secondary.main,
         '&:hover': {
-            backgroundColor: green[700],
+            backgroundColor: theme.palette.secondary.dark,
         },
     },
     fabProgress: {
-        color: green[500],
+        color: theme.palette.secondary.light,
         position: 'absolute',
         top: -6,
         left: -6,
         zIndex: 1,
     },
     buttonProgress: {
-        color: green[500],
+        color: theme.palette.secondary.light,
         position: 'absolute',
         top: '50%',
         left: '50%',
@@ -32,15 +34,13 @@ const styles = theme => ({
 });
 
 const StartBuildButton = props => {
-    const normaliseProgress = () => props.success ? props.filesInFolder : (props.filesDone) * 100 / (props.filesInFolder - 0);
-
     return (
 
-        <div className={props.classes.wrapper}>
+        <div className={`${props.classes.wrapper} ${(props.success || props.loading) ? props.classes.wrapperLoading : ''}`}>
             <Fab disabled={props.disabled()} color="primary" className={props.classes.buttonSuccess} onClick={props.onClick}>
                 {props.success ? <Check/> : <Save/>}
             </Fab>
-            {props.loading && <CircularProgress disableShrink variant="determinate" size={68} className={props.classes.fabProgress} value={normaliseProgress()}/>}
+            {props.loading && <CircularProgress disableShrink size={68} className={props.classes.fabProgress}/>}
         </div>
     )
 };

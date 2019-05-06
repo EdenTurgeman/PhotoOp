@@ -2,12 +2,8 @@ import React, {Component, Fragment} from 'react';
 import {connect} from "react-redux";
 import BuildConfirmationDialog from "./BuildConfirmationDialog";
 import StartBuildButton from "./StartBuildButton";
-import {
-    setProcessEnded,
-    setProcessNotSuccess,
-    setProcessStarted,
-    setProcessSuccess,
-} from "../../Redux/actions/MoveActions";
+import {setProcessEnded, setProcessStarted, setProcessSuccess,} from "../../Redux/actions/MoveActions";
+import ProcessLoading from "./ProcessLoading";
 
 const {ipcRenderer} = window.require('electron');
 
@@ -16,7 +12,7 @@ class StartPage extends Component {
         super(props);
 
         this.state = {
-            filesInFolder: 0,
+            filesInFolder: ipcRenderer.sendSync('filesInFolder', this.props.path.srcPath),
             filesDone: 0,
             open: false
         };
@@ -27,15 +23,11 @@ class StartPage extends Component {
     }
 
     componentWillMount() {
-        this.setState({
-            ...this.state,
-            filesInFolder: ipcRenderer.sendSync('filesInFolder', this.props.path.srcPath)
-        });
         this.subscribeToReplies();
     }
 
     subscribeToReplies = () => {
-        ipcRenderer.on('moveFiles-reply', (event, arg) => {
+        ipcRenderer.on('moveFiles-reply', () => {
             this.props.setProcessEnded();
             this.props.setProcessSuccess();
             this.props.onComplete();
@@ -76,22 +68,19 @@ class StartPage extends Component {
 
     render() {
         const {classes} = this.props;
-
         return (
             <Fragment>
                 <StartBuildButton disabled={this.isPathSet} classes={classes}
                                   onClick={this.handleToggleDialog}
                                   success={this.props.move.processSuccess}
-                                  loading={this.props.move.processRunning}
-                                  filesInFolder={this.state.filesInFolder}
-                                  filesDone={this.state.filesDone}
-                />
-                <div>
-                    {
-                        (this.props.move.processSuccess || this.props.move.processRunning) &&
-                        ((!this.props.move.processSuccess ? this.state.filesDone : this.state.filesInFolder) + " of " + this.state.filesInFolder)
-                    }
-                </div>
+                                  loading={this.props.move.processRunning}/>
+                {
+                    (this.props.move.processSuccess || this.props.move.processRunning) &&
+                    <ProcessLoading processSuccess={this.props.move.processSuccess}
+                                    filesDone={this.state.filesDone}
+                                    filesInFolder={this.state.filesInFolder}/>
+
+                }
                 <BuildConfirmationDialog open={this.state.open} onClose={this.handleClose}
                                          filesInFolder={this.state.filesInFolder}
                                          onClick={this.handleToggleDialog}
@@ -115,9 +104,6 @@ const mapDispatchToProps = dispatch => {
         },
         setProcessSuccess: () => {
             dispatch(setProcessSuccess());
-        },
-        setProcessNotSuccess: () => {
-            dispatch(setProcessNotSuccess());
         },
         setProcessEnded: () => {
             dispatch(setProcessEnded());
