@@ -7,7 +7,6 @@ const StyledFolderCard = styled(Card)`
     text-align: center;
     width: 150px;
     height: 40px;
-    margin-top: 10px;
 `;
 
 

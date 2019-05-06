@@ -44,7 +44,8 @@ const handleExifField = (field, tags) => {
         return tags[exifName] !== undefined;
     });
 
-    const exifData = tags[exifField];
+    // Remove forward slashes so sub-folders won't be created accidentally
+    const exifData = tags[exifField].toString().replace(/\//g, '`');
 
     if (exifData !== undefined) {
         return exifData;
