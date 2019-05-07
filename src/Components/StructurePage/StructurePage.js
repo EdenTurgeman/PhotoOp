@@ -2,25 +2,14 @@ import React, {Component, Fragment} from 'react';
 import {connect} from "react-redux";
 import styled from 'styled-components';
 import {Add} from '@material-ui/icons';
-import {Fab, List} from '@material-ui/core'
+import {Fab} from '@material-ui/core'
 import FieldsSelectDialog from "./FieldsSelectDialog";
-import {addField, removeField} from "../../Redux/actions/PathActions";
-import FieldCard from "./FieldCard";
-
-const StyledStructureContainer = styled(List)`
-    display: flex;
-    max-height: 300px;
-    width: inherit;
-    flex-flow: row wrap;
-    justify-content: center;
-    align-items: center;
-    overflow: auto;
-`;
+import {addField, swapFields} from "../../Redux/actions/PathActions";
+import FieldsList from "./FieldsList";
 
 const StyledFab = styled(Fab)`
     background-color: #F9AA33;
     position: fixed;
-    float: left;
 `;
 
 class StructurePage extends Component {
@@ -39,6 +28,7 @@ class StructurePage extends Component {
     };
 
     openFieldsList = () => {
+        this.props.addField('MegaPixels');
         this.setState({fieldsDialogOpen: true});
     };
 
@@ -49,11 +39,7 @@ class StructurePage extends Component {
     render() {
         return (
             <Fragment>
-                <StyledStructureContainer>
-                    {
-                        this.props.path.usedFields.map((field, index) => <FieldCard field={field} key={index}/>)
-                    }
-                </StyledStructureContainer>
+                <FieldsList/>
                 <StyledFab onClick={this.openFieldsList}>
                     <Add/>
                 </StyledFab>
@@ -79,8 +65,8 @@ const mapDispatchToProps = dispatch => {
         addField: fieldName => {
             dispatch(addField(fieldName));
         },
-        removeField: fieldName => {
-            dispatch(removeField(fieldName));
+        swapFields: (sourceIndex, destinationIndex) => {
+            dispatch(swapFields(sourceIndex, destinationIndex));
         },
     }
 };

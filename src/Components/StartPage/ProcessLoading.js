@@ -26,7 +26,7 @@ const ProcessLoading = (props) => {
                     ((!props.processSuccess ? props.filesDone : props.filesInFolder) + " of " + props.filesInFolder)
                 }
             </Typography>
-            <StyledLinearProgress color="secondary" variant="determinate" value={normalise()}/>
+            <StyledLinearProgress color="primary" variant="determinate" value={normalise()}/>
         </StyledProgressContainer>
     )
 };

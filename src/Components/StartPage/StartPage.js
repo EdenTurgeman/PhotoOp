@@ -20,6 +20,7 @@ class StartPage extends Component {
 
     componentWillUnmount() {
         ipcRenderer.removeAllListeners("moveFiles-reply");
+        ipcRenderer.removeAllListeners("progress-report");
     }
 
     componentWillMount() {

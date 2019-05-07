@@ -4,7 +4,12 @@ import PathPage from "../PathPage/PathPage";
 import StructurePage from "../StructurePage/StructurePage";
 import StartPage from "../StartPage/StartPage";
 import {Step, StepButton, StepLabel, Stepper, Typography} from "@material-ui/core";
-import {StyledContent, StyledShell, StyledPagesContainer, StyledStepperContainer} from "./StyledComponents";
+import {
+    StyledContent,
+    StyledShell,
+    StyledPagesContainer,
+    StyledStepperContainer,
+} from "./StyledComponents";
 import ErrorDialog from "../ErrorNotification/ErrorDialog";
 
 const {ipcRenderer} = window.require('electron');

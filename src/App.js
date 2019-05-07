@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {Provider} from 'react-redux'
 import styled, {ThemeProvider} from "styled-components";
 import {createMuiTheme, MuiThemeProvider} from '@material-ui/core'
-import {amber, teal} from '@material-ui/core/colors'
+import {blueGrey, amber} from '@material-ui/core/colors'
 
 import './styles/App.css';
 import Shell from "./Components/Shell/Shell";
@@ -15,17 +15,17 @@ const StyledApp = styled.div`
     justify-content: space-around;
     align-items: center;
     display: flex;
-    background-color: ${props => props.theme.palette.primary.main};
+    background-color: ${props => props.theme.palette.secondary.dark};
     flex-flow: column;
 `;
 
 const theme = createMuiTheme({
     palette: {
         primary: {
-            main: teal[500],
+            main: amber[500],
         },
         secondary: {
-            main: amber[500],
+            main: blueGrey[500],
         },
         contrastThreshold: 3,
         typography: { useNextVariants: true }

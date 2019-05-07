@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import styled from "styled-components";
-import {Card, ListItem} from "@material-ui/core";
+import {Card, ListItem, RootRef} from "@material-ui/core";
 import {ArrowDownward} from "@material-ui/icons"
 
 const StyledFolderCard = styled(Card)`
@@ -18,12 +18,16 @@ const StyledFieldItem = styled(ListItem)`
 class FieldCard extends Component {
     render() {
         return (
-            <StyledFieldItem>
-                <StyledFolderCard>
-                    {this.props.field.alias}
-                </StyledFolderCard>
-                <ArrowDownward/>
-            </StyledFieldItem>
+            <RootRef rootRef={this.props.innerRef}>
+                <StyledFieldItem
+                    {...this.props.provided.dragHandleProps}
+                    {...this.props.provided.draggableProps}>
+                    <StyledFolderCard>
+                        {this.props.field.alias}
+                    </StyledFolderCard>
+                    <ArrowDownward/>
+                </StyledFieldItem>
+            </RootRef>
         );
     }
 }

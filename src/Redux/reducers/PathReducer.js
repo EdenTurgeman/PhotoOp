@@ -1,4 +1,4 @@
-import {ADD_FIELD, REMOVE_FIELD, SET_DEST, SET_SRC} from "../actions/PathActions";
+import {ADD_FIELD, REMOVE_FIELD, SET_DEST, SET_SRC, SWAP_FIELDS} from "../actions/PathActions";
 import pathFields from '../../assets/camera-fields-map';
 
 const initState = {
@@ -55,6 +55,21 @@ export const pathReducer = (state = initState, action) => {
                     openFields: state.openFields.concat(state.usedFields[fieldIndex]),
                     usedFields: filterFieldByIndex(state.usedFields, fieldIndex)
                 };
+            }
+            break;
+        }
+        case SWAP_FIELDS : {
+            const {sourceIndex, destinationIndex} = action;
+
+            if (sourceIndex !== destinationIndex) {
+                const orderedUsedList = [...state.usedFields];
+                const [removedField] = orderedUsedList.splice(sourceIndex, 1);
+                orderedUsedList.splice(destinationIndex, 0, removedField);
+
+                state = {
+                    ...state,
+                    usedFields: orderedUsedList
+                }
             }
             break;
         }
