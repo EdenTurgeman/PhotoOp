@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import {Add} from '@material-ui/icons';
 import {Fab} from '@material-ui/core'
 import FieldsSelectDialog from "./FieldsSelectDialog";
-import {addField, swapFields} from "../../Redux/actions/PathActions";
+import {addField} from "../../Redux/actions/PathActions";
 import FieldsList from "./FieldsList";
 
 const StyledFab = styled(Fab)`
@@ -63,9 +63,6 @@ const mapDispatchToProps = dispatch => {
     return {
         addField: fieldName => {
             dispatch(addField(fieldName));
-        },
-        swapFields: (sourceIndex, destinationIndex) => {
-            dispatch(swapFields(sourceIndex, destinationIndex));
         },
     }
 };

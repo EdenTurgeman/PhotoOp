@@ -28,7 +28,7 @@ class PathPage extends Component {
         return (
             <Fragment>
                 <PathCard setPath={this.props.setSrcPath} path={this.props.path.srcPath} text='From'/>
-                <StyledArrow fontSize='large'/>
+                <StyledArrow color='action' fontSize='large'/>
                 <PathCard setPath={this.props.setDestPath} path={this.props.path.destPath} text='To'/>
             </Fragment>
         );
