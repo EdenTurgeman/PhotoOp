@@ -28,7 +28,6 @@ class StructurePage extends Component {
     };
 
     openFieldsList = () => {
-        this.props.addField('MegaPixels');
         this.setState({fieldsDialogOpen: true});
     };
 
