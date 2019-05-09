@@ -1,15 +1,19 @@
 import React, {Component, Fragment} from 'react';
 import {connect} from "react-redux";
 import styled from 'styled-components';
-import {Add} from '@material-ui/icons';
-import {Fab} from '@material-ui/core'
+import {DragDropContext, Droppable} from 'react-beautiful-dnd'
+import {Add, Delete} from '@material-ui/icons';
+import {Fab, RootRef} from '@material-ui/core'
 import FieldsSelectDialog from "./FieldsSelectDialog";
-import {addField} from "../../Redux/actions/PathActions";
+import {addField, swapFields} from "../../Redux/actions/PathActions";
 import FieldsList from "./FieldsList";
 
 const StyledFab = styled(Fab)`
-    background-color: #F9AA33;
-    position: fixed;
+    &&{
+      position: absolute;
+      bottom: ${props => props.theme.spacing.unit * 10}px;
+      left: ${props => props.theme.spacing.unit * 3}px;
+    }
 `;
 
 class StructurePage extends Component {
@@ -35,13 +39,34 @@ class StructurePage extends Component {
         this.setState({fieldsDialogOpen: false});
     };
 
+    onDragEnd = dragResult => {
+        if (dragResult.destination) {
+            const sourceIndex = dragResult.source.index;
+            const destinationIndex = dragResult.destination.index;
+
+            if (sourceIndex !== destinationIndex) {
+                this.props.swapFields(sourceIndex, destinationIndex);
+            }
+        }
+    };
+
     render() {
         return (
             <Fragment>
-                <FieldsList/>
-                <StyledFab onClick={this.openFieldsList}>
-                    <Add/>
-                </StyledFab>
+                <DragDropContext onDragEnd={this.onDragEnd}>
+                    <FieldsList/>
+                    <Droppable droppableId="deleteButton">
+                        {
+                            (provided, snapShot) => {
+                                return <RootRef rootRef={provided.innerRef}>
+                                    <StyledFab onClick={this.openFieldsList}>
+                                        {snapShot.isDraggingOver ? <Delete/> : <Add/>}
+                                    </StyledFab>
+                                </RootRef>
+                            }
+                        }
+                    </Droppable>
+                </DragDropContext>
                 <FieldsSelectDialog
                     open={this.state.fieldsDialogOpen}
                     fields={this.props.path.openFields}
@@ -49,7 +74,8 @@ class StructurePage extends Component {
                     onConfirm={this.props.addField}
                 />
             </Fragment>
-        );
+        )
+            ;
     }
 }
 
@@ -64,6 +90,9 @@ const mapDispatchToProps = dispatch => {
         addField: fieldName => {
             dispatch(addField(fieldName));
         },
+        swapFields: (sourceIndex, destinationIndex) => {
+            dispatch(swapFields(sourceIndex, destinationIndex));
+        }
     }
 };
 

@@ -11,20 +11,20 @@ const styles = theme => ({
         marginTop: '100px'
     },
     buttonSuccess: {
-        backgroundColor: theme.palette.secondary.main,
+        backgroundColor: theme.palette.primary.main,
         '&:hover': {
-            backgroundColor: theme.palette.secondary.dark,
+            backgroundColor: theme.palette.primary.dark,
         },
     },
     fabProgress: {
-        color: theme.palette.secondary.light,
+        color: theme.palette.primary.light,
         position: 'absolute',
         top: -6,
         left: -6,
         zIndex: 1,
     },
     buttonProgress: {
-        color: theme.palette.secondary.light,
+        color: theme.palette.primary.light,
         position: 'absolute',
         top: '50%',
         left: '50%',

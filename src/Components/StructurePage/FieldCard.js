@@ -1,13 +1,15 @@
-import React, {Component} from 'react';
+import React from 'react';
 import styled from "styled-components";
 import {Card, IconButton, ListItem, RootRef, Typography} from "@material-ui/core";
-import {ArrowDownward, Delete, DragHandle} from "@material-ui/icons"
+import {ArrowDownward, Close, DragHandle} from "@material-ui/icons"
 
 const StyledFieldCard = styled(Card)`
+    transition: all .1s ease-in;
+    transform: scale(${props => props.isDragging ? 0.9 : 1});
     display: flex;
     align-items: center;
     flex-flow: row;
-    padding-left: 4px;
+    padding: 0 10px 0 4px;
     text-align: left;
     width: 70%;
     height: 50px;
@@ -32,27 +34,30 @@ const StyledTrashIconButton = styled(IconButton)`
     }
 `;
 
-class FieldCard extends Component {
-    render() {
-        const {field} = this.props;
+const StyledDragHandleContainer = styled.p`
+  margin-left: auto;
+  font-size: 20px;
+`;
 
-        return (
-            <RootRef rootRef={this.props.innerRef}>
-                <StyledFieldListItem classes={{root: {padding: 0}}}
-                                     {...this.props.provided.dragHandleProps}
-                                     {...this.props.provided.draggableProps}>
-                    <StyledFieldCard>
-                        <StyledTrashIconButton size='small' onClick={() => this.props.deleteField(field.alias)}>
-                            <Delete/>
-                        </StyledTrashIconButton>
-                        <Typography>{field.alias}</Typography>
-                        <DragHandle fontSize='20'/>
-                    </StyledFieldCard>
-                    {this.props.drawArrow && <StyledArrow fontSize='30px' color='action'/>}
-                </StyledFieldListItem>
-            </RootRef>
-        );
-    }
-}
+const FieldCard = props => {
+    const {field, provided, snapShot} = props;
+
+    return (
+        <RootRef rootRef={props.innerRef}>
+            <StyledFieldListItem {...provided.draggableProps}>
+                <StyledFieldCard isDragging={snapShot.isDragging}>
+                    <StyledTrashIconButton size='small' onClick={() => props.deleteField(field.alias)}>
+                        <Close/>
+                    </StyledTrashIconButton>
+                    <Typography>{field.alias}</Typography>
+                    <StyledDragHandleContainer {...provided.dragHandleProps}>
+                        <DragHandle/>
+                    </StyledDragHandleContainer>
+                </StyledFieldCard>
+                {props.drawArrow && <StyledArrow fontSize='30px' color='action'/>}
+            </StyledFieldListItem>
+        </RootRef>
+    );
+};
 
 export default FieldCard;
