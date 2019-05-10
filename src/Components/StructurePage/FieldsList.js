@@ -7,6 +7,7 @@ import FieldCard from "./FieldCard";
 import {removeField} from "../../Redux/actions/PathActions";
 
 const SyledFieldsList = styled(List)`
+    height: inherit;
     width: inherit;
     overflow: auto;
 `;

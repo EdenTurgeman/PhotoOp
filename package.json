@@ -16,7 +16,7 @@
     "build-app": "react-scripts build && electron-builder build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "electron": "electron --enable-sandbox src/electron/main.js"
+    "electron": "electron src/electron/main.js"
   },
   "eslintConfig": {
     "extends": "react-app"
