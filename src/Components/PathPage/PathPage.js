@@ -10,14 +10,6 @@ export const StyledArrow = styled(ArrowDownward)`
 `;
 
 class PathPage extends Component {
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            tags: 'tags'
-        }
-    }
-
     componentWillReceiveProps(nextProps, nextContext) {
         if (nextProps.path.srcPath && nextProps.path.destPath) {
             this.props.onComplete();

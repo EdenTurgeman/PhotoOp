@@ -21,7 +21,7 @@ const ProcessLoading = (props) => {
     const normalise = () => props.processSuccess ? 100 : (props.filesDone) * 100 / (props.filesInFolder);
     return (
         <StyledProgressContainer>
-            <Typography>
+            <Typography color='textPrimary'>
                 {
                     ((!props.processSuccess ? props.filesDone : props.filesInFolder) + " of " + props.filesInFolder)
                 }
