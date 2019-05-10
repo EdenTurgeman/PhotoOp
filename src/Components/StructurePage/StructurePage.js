@@ -1,20 +1,12 @@
 import React, {Component, Fragment} from 'react';
 import {connect} from "react-redux";
-import styled from 'styled-components';
 import {DragDropContext, Droppable} from 'react-beautiful-dnd'
 import {Add, Delete} from '@material-ui/icons';
-import {Fab, RootRef} from '@material-ui/core'
+import {RootRef} from '@material-ui/core'
 import FieldsSelectDialog from "./FieldsSelectDialog";
 import {addField, swapFields} from "../../Redux/actions/PathActions";
 import FieldsList from "./FieldsList";
-
-const StyledFab = styled(Fab)`
-    &&{
-      position: absolute;
-      bottom: ${props => props.theme.spacing.unit * 10}px;
-      left: ${props => props.theme.spacing.unit * 3}px;
-    }
-`;
+import {StyledAddFieldFab} from "./StyledComponents";
 
 class StructurePage extends Component {
     constructor(props) {
@@ -59,9 +51,9 @@ class StructurePage extends Component {
                         {
                             (provided, snapShot) => {
                                 return <RootRef rootRef={provided.innerRef}>
-                                    <StyledFab onClick={this.openFieldsList}>
+                                    <StyledAddFieldFab onClick={this.openFieldsList}>
                                         {snapShot.isDraggingOver ? <Delete/> : <Add/>}
-                                    </StyledFab>
+                                    </StyledAddFieldFab>
                                 </RootRef>
                             }
                         }

@@ -10,7 +10,7 @@ import {
     StyledPagesContainer,
     StyledStepperContainer,
 } from "./StyledComponents";
-import ErrorDialog from "../ErrorNotification/ErrorDialog";
+import ErrorDialog from "../ErrorDialog/ErrorDialog";
 
 const {ipcRenderer} = window;
 

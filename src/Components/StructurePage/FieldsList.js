@@ -1,16 +1,10 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux'
-import styled from 'styled-components';
-import {List, RootRef} from '@material-ui/core'
+import {RootRef} from '@material-ui/core'
 import {Draggable, Droppable} from 'react-beautiful-dnd'
 import FieldCard from "./FieldCard";
 import {removeField} from "../../Redux/actions/PathActions";
-
-const SyledFieldsList = styled(List)`
-    height: inherit;
-    width: inherit;
-    overflow: auto;
-`;
+import {SyledFieldsList} from "./StyledComponents";
 
 class FieldsList extends Component {
     render() {
@@ -23,13 +17,11 @@ class FieldsList extends Component {
                                 {this.props.path.usedFields.map((field, index) =>
                                     <Draggable draggableId={field.alias} key={field.alias} index={index}>
                                         {
-                                            (provided, snapshot) => {
+                                            provided => {
                                                 const drawArrow = index < this.props.path.usedFields.length - 1;
                                                 return <FieldCard drawArrow={drawArrow}
                                                                   deleteField={this.props.deleteField}
                                                                   provided={provided}
-                                                                  snapShot={snapshot}
-                                                                  innerRef={provided.innerRef}
                                                                   index={index}
                                                                   field={field}/>
                                             }

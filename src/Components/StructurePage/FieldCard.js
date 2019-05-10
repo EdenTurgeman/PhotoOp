@@ -1,56 +1,40 @@
 import React from 'react';
-import styled from "styled-components";
-import {Card, IconButton, ListItem, RootRef, Typography} from "@material-ui/core";
-import {ArrowDownward, Close, DragHandle} from "@material-ui/icons"
+import {connect} from 'react-redux'
+import {RootRef, TextField, Typography} from "@material-ui/core";
+import {Close, DragHandle} from "@material-ui/icons"
+import {updateField} from "../../Redux/actions/PathActions";
+import {
+    StyledArrow,
+    StyledDragHandleContainer,
+    StyledFieldCard,
+    StyledFieldListItem,
+    StyledTrashIconButton
+} from "./StyledComponents";
 
-const StyledFieldCard = styled(Card)`
-    transition: all .1s ease-in;
-    transform: scale(${props => props.isDragging ? 0.9 : 1});
-    display: flex;
-    align-items: center;
-    flex-flow: row;
-    padding: 0 10px 0 4px;
-    text-align: left;
-    width: 70%;
-    height: 50px;
-`;
-
-const StyledFieldListItem = styled(ListItem)`
-    && {
-      display: flex;
-      justify-content: space-between;
-      padding: 0;
-      flex-flow: column;
-    }
-`;
-
-const StyledArrow = styled(ArrowDownward)`
-  margin: 10px;
-  font-size: 30px;
-`;
-
-const StyledTrashIconButton = styled(IconButton)`
-    && {
-      margin-right: 10px;
-    }
-`;
-
-const StyledDragHandleContainer = styled.p`
-  margin-left: auto;
-  font-size: 20px;
-`;
+const fileNamePattern = '([a-zA-Z0-9\\s_\\\\.\\-\\(\\):])+$';
 
 const FieldCard = props => {
-    const {field, provided, snapShot} = props;
+    const {field, provided} = props;
+
+    const isFolderNameValid = value => new RegExp(fileNamePattern).test(value);
+
+    const updateFieldValue = (fieldIndex, fieldValue) => {
+        if (isFolderNameValid(fieldValue)) {
+            props.updateField(fieldIndex, fieldValue);
+        }
+    };
 
     return (
-        <RootRef rootRef={props.innerRef}>
+        <RootRef rootRef={provided.innerRef}>
             <StyledFieldListItem {...provided.draggableProps}>
-                <StyledFieldCard isDragging={snapShot.isDragging}>
+                <StyledFieldCard>
                     <StyledTrashIconButton size='small' onClick={() => props.deleteField(field.alias)}>
                         <Close/>
                     </StyledTrashIconButton>
                     <Typography>{field.alias}</Typography>
+                    {field.userInput && <TextField required
+                                                   value={field.fieldValue}
+                                                   onChange={(event) => updateFieldValue(props.index, event.target.value)}/>}
                     <StyledDragHandleContainer {...provided.dragHandleProps}>
                         <DragHandle/>
                     </StyledDragHandleContainer>
@@ -58,7 +42,17 @@ const FieldCard = props => {
                 {props.drawArrow && <StyledArrow color='action'/>}
             </StyledFieldListItem>
         </RootRef>
-    );
+    )
+}
+
+const mapDispatchToProps = dispatch => {
+    return {
+        updateField: (fieldIndex, fieldValue) => {
+            dispatch(updateField(fieldIndex, fieldValue));
+        }
+
+    }
 };
 
-export default FieldCard;
+// will be changed as soon as the new infrastructure is ready.
+export default connect(null, mapDispatchToProps)(FieldCard);

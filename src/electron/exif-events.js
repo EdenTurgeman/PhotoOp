@@ -23,6 +23,10 @@ const getDateInfo = (field, tags) => {
 };
 
 const handleUserField = (field, tags, filePath) => {
+    if(field.userInput && field.fieldValue){
+        return field.fieldValue;
+    }
+
     switch (field.id) {
         case "Day": {
             return getDateInfo(field, tags).getDate().toString();
@@ -44,8 +48,7 @@ const handleExifField = (field, tags) => {
         return tags[exifName] !== undefined;
     });
 
-    // Remove forward slashes so sub-folders won't be created accidentally
-    const exifData = tags[exifField].toString().replace(/\//g, '`');
+    const exifData = tags[exifField].toString();
 
     if (exifData !== undefined) {
         return exifData;
@@ -63,7 +66,8 @@ const buildPathForFile = (usedFields, filePath, rootDestPath) => {
             usedFields.forEach(field => {
                 const pathAddition = field.userField ? handleUserField(field, tags, filePath) : handleExifField(field, tags);
 
-                fileDest = join(fileDest, pathAddition.toString())
+                // Remove forward slashes so sub-folders won't be created accidentally
+                fileDest = join(fileDest, pathAddition.toString().replace(/\//g, '`'));
             });
 
             return fileDest;

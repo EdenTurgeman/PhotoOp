@@ -59,8 +59,9 @@
     "userField": true
   },
   {
-    "alias": ["Project Name"],
+    "alias": "Project Name",
     "id": "ProjectName",
-    "userField": true
+    "userField": true,
+    "userInput": true
   }
 ]

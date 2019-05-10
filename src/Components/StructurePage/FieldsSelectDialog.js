@@ -62,9 +62,9 @@ class FieldsSelectDialog extends Component {
                         value={this.state.selectedField}
                         onChange={this.handleChange}
                     >
-                        {this.props.fields.map(field => (
+                        {this.props.fields.map((field, index) => (
                             <FormControlLabel value={field.alias}
-                                              key={field.alias} control={<Radio/>}
+                                              key={index} control={<Radio/>}
                                               label={field.alias}/>
                         ))}
                     </RadioGroup>
