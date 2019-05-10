@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import {Card, Typography} from "@material-ui/core";
 import Button from "@material-ui/core/Button";
 
-const {dialog} = window.require('electron').remote;
+const {dialog} = window.remote;
 
 const StyledPathCard = styled(Card)`
     width: 70%;

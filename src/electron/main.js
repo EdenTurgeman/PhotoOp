@@ -14,7 +14,11 @@ function createWindow() {
             minWidth: 450,
             maxHeight: 650,
             maxWidth: 650,
-            frame: false
+            frame: false,
+            webPreferences: {
+                nodeIntegration: false,
+                preload: __dirname + '/preload.js'
+            }
         });
 
     win.loadURL(isDev ? 'http://localhost:3000' : join(__dirname, '../../build/index.html'));

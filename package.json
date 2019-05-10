@@ -16,7 +16,7 @@
     "build-app": "react-scripts build && electron-builder build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "electron": "electron ./src/electron/main.js"
+    "electron": "electron --enable-sandbox src/electron/main.js"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -47,7 +47,7 @@
     "asar": true,
     "productName": "PhotoOp",
     "appId": "com.et.photoOp",
-    "electronVersion": "4.1.2",
+    "electronVersion": "5.0.1",
     "files": [
       "build/",
       "./src/electron/",

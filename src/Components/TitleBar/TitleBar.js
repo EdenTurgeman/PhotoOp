@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import {Close, CropSquareOutlined, MinimizeOutlined} from '@material-ui/icons'
 import {withStyles, IconButton} from "@material-ui/core";
 
-const {remote} = window.require('electron');
+const {remote} = window;
 
 // A bit of a mess style wise because the special electron properties don't always work, same with background-color and Iconbutton
 const StyledTitleBar = styled.div`

@@ -26,6 +26,7 @@ const StyledFieldListItem = styled(ListItem)`
 
 const StyledArrow = styled(ArrowDownward)`
   margin: 10px;
+  font-size: 30px;
 `;
 
 const StyledTrashIconButton = styled(IconButton)`
@@ -54,7 +55,7 @@ const FieldCard = props => {
                         <DragHandle/>
                     </StyledDragHandleContainer>
                 </StyledFieldCard>
-                {props.drawArrow && <StyledArrow fontSize='30px' color='action'/>}
+                {props.drawArrow && <StyledArrow color='action'/>}
             </StyledFieldListItem>
         </RootRef>
     );

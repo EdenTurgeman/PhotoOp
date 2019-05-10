@@ -12,7 +12,7 @@ import {
 } from "./StyledComponents";
 import ErrorDialog from "../ErrorNotification/ErrorDialog";
 
-const {ipcRenderer} = window.require('electron');
+const {ipcRenderer} = window;
 
 const steps = [
     {

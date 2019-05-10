@@ -5,7 +5,7 @@ import StartBuildButton from "./StartBuildButton";
 import {setProcessEnded, setProcessStarted, setProcessSuccess,} from "../../Redux/actions/MoveActions";
 import ProcessLoading from "./ProcessLoading";
 
-const {ipcRenderer} = window.require('electron');
+const {ipcRenderer} = window;
 
 class StartPage extends Component {
     constructor(props) {
