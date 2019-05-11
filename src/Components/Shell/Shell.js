@@ -1,15 +1,10 @@
-import React, {Component, createElement} from "react";
+import React, {createElement, useState} from "react";
 import TitleBar from "../TitleBar/TitleBar";
 import PathPage from "../PathPage/PathPage";
 import StructurePage from "../StructurePage/StructurePage";
 import StartPage from "../StartPage/StartPage";
 import {Step, StepButton, StepLabel, Stepper, Typography} from "@material-ui/core";
-import {
-    StyledContent,
-    StyledShell,
-    StyledPagesContainer,
-    StyledStepperContainer,
-} from "./StyledComponents";
+import {StyledContent, StyledPagesContainer, StyledShell, StyledStepperContainer,} from "./StyledComponents";
 import ErrorDialog from "../ErrorDialog/ErrorDialog";
 
 const {ipcRenderer} = window;
@@ -37,89 +32,77 @@ const getStepComponent = step => {
     return steps[step].component;
 };
 
-class Shell extends Component {
-    constructor(props) {
-        super(props);
+const Shell = props => {
 
-        this.state = {
-            activeStep: 0,
-            completed: [false, false],
-            errorDialogOpen: false,
-            error: {}
-        }
-    }
+    const [activeStep, setActiveStep] = useState(0);
+    const [errorDialog, setError] = useState({
+        open: false,
+        errorText: {}
+    });
 
-    componentWillMount() {
-        ipcRenderer.on('error',(event, error) => {
-            this.setState({
-                ...this.state,
-                errorDialogOpen: true,
-                error
-            })
+    ipcRenderer.on('error', (event, error) => {
+        setError({
+            open: true,
+            errorText: error.toString()
         })
-    }
+    });
 
-    handleStep = step => () => {
-        this.setState({
-            activeStep: step,
-        });
+    const handleStep = step => () => {
+        setActiveStep(step);
     };
 
-    handleNextStep = () => {
-        if (this.state.activeStep < steps.length - 1) {
-            this.setState({
-                activeStep: this.state.activeStep + 1
-            });
-        }
-    };
-
-    onCompleteStep = stepIndex => {
+    const onCompleteStep = stepIndex => {
         if (!steps[stepIndex].completed) {
             steps[stepIndex].completed = true;
         }
     };
 
-    closeErrorDialog = () => {
-        this.setState({
-            ...this.state,
-            errorDialogOpen: false,
-            error: {}
-        })
+    const onCancelStep = stepIndex => {
+        if (steps[stepIndex].completed) {
+            steps[stepIndex].completed = false;
+        }
     };
 
-    render() {
-        return (
-            <StyledShell>
-                <TitleBar/>
-                <StyledContent>
-                    <StyledPagesContainer>
-                        {createElement(getStepComponent(this.state.activeStep),
-                            {
-                                onComplete: () => this.onCompleteStep(this.state.activeStep)
-                            })}
-                    </StyledPagesContainer>
-                    <StyledStepperContainer>
-                        <Stepper nonLinear
-                                 style={{backgroundColor: "transparent"}}
-                                 activeStep={this.state.activeStep}>
-                            {
-                                steps.map((step, index) => {
-                                    return <Step key={step.label}>
-                                        <StepButton onClick={this.handleStep(index)}
-                                                    optional={<Typography variant="caption">{step.subText}</Typography>}
-                                                    completed={steps[index].completed}>
-                                            <StepLabel>{step.label}</StepLabel>
-                                        </StepButton>
-                                    </Step>
-                                })
-                            }
-                        </Stepper>
-                    </StyledStepperContainer>
-                </StyledContent>
-                <ErrorDialog open={this.state.errorDialogOpen} onClose={this.closeErrorDialog} error={this.state.error}/>
-            </StyledShell>
-        )
-    }
-}
+    const closeErrorDialog = () => {
+        setError({
+            open: false,
+            errorText: ''
+        });
+    };
+
+    return (
+        <StyledShell>
+            <TitleBar/>
+            <StyledContent>
+                <StyledPagesContainer>
+                    {createElement(getStepComponent(activeStep),
+                        {
+                            onComplete: () => onCompleteStep(activeStep),
+                            onCancel: () => onCancelStep(activeStep)
+                        })}
+                </StyledPagesContainer>
+                <StyledStepperContainer>
+                    <Stepper nonLinear
+                             style={{backgroundColor: "transparent"}}
+                             activeStep={activeStep}>
+                        {
+                            steps.map((step, index) => {
+                                return <Step key={step.label}>
+                                    <StepButton onClick={handleStep(index)}
+                                                optional={<Typography variant="caption">{step.subText}</Typography>}
+                                                completed={steps[index].completed}>
+                                        <StepLabel>{step.label}</StepLabel>
+                                    </StepButton>
+                                </Step>
+                            })
+                        }
+                    </Stepper>
+                </StyledStepperContainer>
+            </StyledContent>
+            <ErrorDialog open={errorDialog.open} onClose={closeErrorDialog}
+                         error={errorDialog.errorText}/>
+        </StyledShell>
+    )
+};
 
 export default Shell;

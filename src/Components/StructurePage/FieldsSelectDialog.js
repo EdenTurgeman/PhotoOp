@@ -1,6 +1,5 @@
-import React, {Component} from 'react';
+import React, {useState} from 'react';
 import {
-    withStyles,
     Button,
     Dialog,
     DialogActions,
@@ -8,7 +7,8 @@ import {
     DialogTitle,
     FormControlLabel,
     Radio,
-    RadioGroup
+    RadioGroup,
+    withStyles
 } from "@material-ui/core";
 
 const styles = theme => ({
@@ -17,69 +17,53 @@ const styles = theme => ({
     },
 });
 
-class FieldsSelectDialog extends Component {
-    constructor(props) {
-        super(props);
+const FieldsSelectDialog = props => {
+    const [selectedField, setSelectedField] = useState('');
 
-        this.state = {
-            selectedField: ''
-        }
-    }
-
-    handleEntering = () => {
-        this.radioGroupRef.focus();
+    const handleCancel = () => {
+        props.onClose();
     };
 
-    handleCancel = () => {
-        this.props.onClose();
+    const handleOk = () => {
+        props.onConfirm(selectedField);
+        props.onClose();
     };
 
-    handleOk = () => {
-        this.props.onConfirm(this.state.selectedField);
-        this.props.onClose();
+    const handleChange = (event, selectedField) => {
+        setSelectedField(selectedField);
     };
 
-    handleChange = (event, selectedField) => {
-        this.setState({selectedField});
-    };
-
-    render() {
-        return (
-            <Dialog
-                disableBackdropClick
-                disableEscapeKeyDown
-                maxWidth="md"
-                open={this.props.open}
-                onEntering={this.handleEntering}
-                classes={{paper: this.props.classes.dialog}}>
-                <DialogTitle>Select Field</DialogTitle>
-                <DialogContent>
-                    <RadioGroup
-                        ref={ref => {
-                            this.radioGroupRef = ref;
-                        }}
-                        aria-label="Select Field"
-                        value={this.state.selectedField}
-                        onChange={this.handleChange}
-                    >
-                        {this.props.fields.map((field, index) => (
-                            <FormControlLabel value={field.alias}
-                                              key={index} control={<Radio/>}
-                                              label={field.alias}/>
-                        ))}
-                    </RadioGroup>
-                </DialogContent>
-                <DialogActions>
-                    <Button onClick={this.handleCancel} color="primary">
-                        Cancel
-                    </Button>
-                    <Button onClick={this.handleOk} color="primary">
-                        Ok
-                    </Button>
-                </DialogActions>
-            </Dialog>
-        );
-    }
-}
+    return (
+        <Dialog
+            disableBackdropClick
+            disableEscapeKeyDown
+            maxWidth="md"
+            open={props.open}
+            classes={{paper: props.classes.dialog}}>
+            <DialogTitle>Select Field</DialogTitle>
+            <DialogContent>
+                <RadioGroup
+                    aria-label="Select Field"
+                    value={selectedField}
+                    onChange={handleChange}
+                >
+                    {props.fields.map((field, index) => (
+                        <FormControlLabel value={field.alias}
+                                          key={index} control={<Radio/>}
+                                          label={field.alias}/>
+                    ))}
+                </RadioGroup>
+            </DialogContent>
+            <DialogActions>
+                <Button onClick={handleCancel} color="primary">
+                    Cancel
+                </Button>
+                <Button onClick={handleOk} color="primary">
+                    Ok
+                </Button>
+            </DialogActions>
+        </Dialog>
+    );
+};
 
 export default withStyles(styles)(FieldsSelectDialog);

@@ -1,4 +1,4 @@
-import React, {Component, Fragment} from 'react';
+import React, {Fragment, useEffect, useState} from 'react';
 import {connect} from "react-redux";
 import BuildConfirmationDialog from "./BuildConfirmationDialog";
 import StartBuildButton from "./StartBuildButton";
@@ -7,88 +7,79 @@ import ProcessLoading from "./ProcessLoading";
 
 const {ipcRenderer} = window;
 
-class StartPage extends Component {
-    constructor(props) {
-        super(props);
+const StartPage = props => {
+    const [filesInFolder, setFilesInFolder] = useState(0);
+    const [filedDone, setFilesDone] = useState(0);
+    const [confirmationOpen, setConfirmationOpen] = useState(false);
 
-        this.state = {
-            filesInFolder: ipcRenderer.sendSync('filesInFolder', this.props.path.srcPath),
-            filesDone: 0,
-            open: false
-        };
-    }
+    const subscribeToUpdates = () => {
+        ipcRenderer.on('moveFiles-reply', () => {
+            props.setProcessEnded();
+            props.setProcessSuccess();
+            props.onComplete();
+        });
 
-    componentWillUnmount() {
+        ipcRenderer.on('progress-report', (event, filesDone) => {
+            setFilesDone(filesDone);
+        });
+    };
+
+    function unsubscribeFromUpdates() {
         ipcRenderer.removeAllListeners("moveFiles-reply");
         ipcRenderer.removeAllListeners("progress-report");
     }
 
-    componentWillMount() {
-        this.subscribeToReplies();
-    }
+    useEffect(() => {
+        subscribeToUpdates();
+        setFilesInFolder(ipcRenderer.sendSync('filesInFolder', props.path.srcPath));
 
-    subscribeToReplies = () => {
-        ipcRenderer.on('moveFiles-reply', () => {
-            this.props.setProcessEnded();
-            this.props.setProcessSuccess();
-            this.props.onComplete();
-        });
+        return () => {
+            unsubscribeFromUpdates();
+        }
+    }, []);
 
-        ipcRenderer.on('progress-report', (event, filesDone) => {
-            this.setState({
-                ...this.state,
-                filesDone: filesDone
-            })
-        });
+    const handleToggleDialog = () => {
+        setConfirmationOpen(!confirmationOpen);
     };
 
-    handleToggleDialog = () => {
-        this.setState({
-            ...this.state,
-            open: !this.state.open
-        })
-    };
+    const handleStartBuild = () => {
+        if (!props.move.processRunning) {
+            handleToggleDialog();
 
-    handleStartBuild = () => {
-        if (!this.props.move.processRunning) {
-            this.handleToggleDialog();
             ipcRenderer.send('moveFiles', {
-                    usedFields: this.props.path.usedFields,
-                    srcPath: this.props.path.srcPath,
-                    destPath: this.props.path.destPath
+                    usedFields: props.path.usedFields,
+                    srcPath: props.path.srcPath,
+                    destPath: props.path.destPath
                 },
             );
 
-            this.props.setProcessStarted();
+            props.setProcessStarted();
         }
     };
 
-    isPathSet = () => {
-        return !(this.props.path.srcPath && this.props.path.destPath);
+    const isPathSet = () => {
+        return !(props.path.srcPath && props.path.destPath);
     };
 
-    render() {
-        const {classes} = this.props;
-        return (
-            <Fragment>
-                <StartBuildButton disabled={this.isPathSet} classes={classes}
-                                  onClick={this.handleToggleDialog}
-                                  success={this.props.move.processSuccess}
-                                  loading={this.props.move.processRunning}/>
-                {
-                    (this.props.move.processSuccess || this.props.move.processRunning) &&
-                    <ProcessLoading processSuccess={this.props.move.processSuccess}
-                                    filesDone={this.state.filesDone}
-                                    filesInFolder={this.state.filesInFolder}/>
+    return (
+        <Fragment>
+            <StartBuildButton disabled={isPathSet} classes={props.classes}
+                              onClick={handleToggleDialog}
+                              success={props.move.processSuccess}
+                              loading={props.move.processRunning}/>
+            {
+                (props.move.processSuccess || props.move.processRunning) &&
+                <ProcessLoading processSuccess={props.move.processSuccess}
+                                filesDone={filedDone}
+                                filesInFolder={filesInFolder}/>
 
-                }
-                <BuildConfirmationDialog open={this.state.open} onClose={this.handleClose}
-                                         filesInFolder={this.state.filesInFolder}
-                                         onClick={this.handleToggleDialog}
-                                         onConfirm={this.handleStartBuild}/>
-            </Fragment>
-        );
-    }
+            }
+            <BuildConfirmationDialog open={confirmationOpen} onClose={handleToggleDialog}
+                                     filesInFolder={filesInFolder}
+                                     onClick={handleToggleDialog}
+                                     onConfirm={handleStartBuild}/>
+        </Fragment>
+    );
 }
 
 const mapStateToProps = (state) => {

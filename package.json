@@ -1,6 +1,6 @@
 {
   "name": "photo-op",
-  "version": "0.7.6",
+  "version": "0.8.0",
   "private": true,
   "productName": "PhotoOp,",
   "main": "src/electron/main.js",

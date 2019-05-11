@@ -1,4 +1,4 @@
-import React, {Component, Fragment} from 'react';
+import React, {Fragment, useEffect, useState} from 'react';
 import {connect} from "react-redux";
 import {DragDropContext, Droppable} from 'react-beautiful-dnd'
 import {Add, Delete} from '@material-ui/icons';
@@ -8,68 +8,57 @@ import {addField, swapFields} from "../../Redux/actions/PathActions";
 import FieldsList from "./FieldsList";
 import {StyledAddFieldFab} from "./StyledComponents";
 
-class StructurePage extends Component {
-    constructor(props) {
-        super(props);
+const StructurePage = props => {
+    const [fieldsDialogOpen, setFieldsDialogOpen] = useState(false);
 
-        this.state = {
-            fieldsDialogOpen: false
-        }
-    }
+    useEffect(() => {
+        props.path.usedFields.length > 0 ? props.onComplete() : props.onCancel();
+    }, [props.path.usedFields]);
 
-    componentWillReceiveProps(nextProps, nextContext) {
-        if (this.props.path.usedFields.length === 0 && nextProps.path.usedFields.length > 0) {
-            nextProps.onComplete();
-        }
+    const openFieldsList = () => {
+        setFieldsDialogOpen(true);
     };
 
-    openFieldsList = () => {
-        this.setState({fieldsDialogOpen: true});
+    const closeFieldsList = () => {
+        setFieldsDialogOpen(false);
     };
 
-    closeFieldsList = () => {
-        this.setState({fieldsDialogOpen: false});
-    };
-
-    onDragEnd = dragResult => {
+    const onDragEnd = dragResult => {
         if (dragResult.destination) {
             const sourceIndex = dragResult.source.index;
             const destinationIndex = dragResult.destination.index;
 
             if (sourceIndex !== destinationIndex) {
-                this.props.swapFields(sourceIndex, destinationIndex);
+                props.swapFields(sourceIndex, destinationIndex);
             }
         }
     };
 
-    render() {
-        return (
-            <Fragment>
-                <DragDropContext onDragEnd={this.onDragEnd}>
-                    <FieldsList/>
-                    <Droppable droppableId="deleteButton">
-                        {
-                            (provided, snapShot) => {
-                                return <RootRef rootRef={provided.innerRef}>
-                                    <StyledAddFieldFab onClick={this.openFieldsList}>
-                                        {snapShot.isDraggingOver ? <Delete/> : <Add/>}
-                                    </StyledAddFieldFab>
-                                </RootRef>
-                            }
+    return (
+        <Fragment>
+            <DragDropContext onDragEnd={onDragEnd}>
+                <FieldsList/>
+                <Droppable droppableId="deleteButton">
+                    {
+                        (provided, snapShot) => {
+                            return <RootRef rootRef={provided.innerRef}>
+                                <StyledAddFieldFab onClick={openFieldsList}>
+                                    {snapShot.isDraggingOver ? <Delete/> : <Add/>}
+                                </StyledAddFieldFab>
+                            </RootRef>
                         }
-                    </Droppable>
-                </DragDropContext>
-                <FieldsSelectDialog
-                    open={this.state.fieldsDialogOpen}
-                    fields={this.props.path.openFields}
-                    onClose={this.closeFieldsList}
-                    onConfirm={this.props.addField}
-                />
-            </Fragment>
-        )
-            ;
-    }
-}
+                    }
+                </Droppable>
+            </DragDropContext>
+            <FieldsSelectDialog
+                open={fieldsDialogOpen}
+                fields={props.path.openFields}
+                onClose={closeFieldsList}
+                onConfirm={props.addField}
+            />
+        </Fragment>
+    )
+};
 
 const mapStateToProps = (state) => {
     return {

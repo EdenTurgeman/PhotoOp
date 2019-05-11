@@ -17,7 +17,7 @@ const StyledProgressContainer = styled.div`
     width: 100%;
 `;
 
-const ProcessLoading = (props) => {
+const ProcessLoading = props => {
     const normalise = () => props.processSuccess ? 100 : (props.filesDone) * 100 / (props.filesInFolder);
     return (
         <StyledProgressContainer>
