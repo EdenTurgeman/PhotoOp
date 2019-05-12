@@ -2,16 +2,18 @@ import React from "react";
 import {Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle} from "@material-ui/core";
 
 const ErrorDialog = props => {
+
+    const getErrorText = () => {
+        return props.error.fullError ? props.error.fullError : JSON.stringify(props.error)
+    };
+
     return (<Dialog
             open={props.open}
-            onClose={props.onClose}
-            aria-labelledby="alert-dialog-title"
-            aria-describedby="alert-dialog-description">
-            <DialogTitle id="alert-dialog-title">{"An error has occurred"}</DialogTitle>
+            onClose={props.onClose}>
+            <DialogTitle id="alert-dialog-title">{"Warning, a problem was detected in one of the files"}</DialogTitle>
             <DialogContent>
                 <DialogContentText id="alert-dialog-description">
-                    {props.error.text}
-                    {props.error.fullError}
+                    {getErrorText()}
                 </DialogContentText>
             </DialogContent>
             <DialogActions>

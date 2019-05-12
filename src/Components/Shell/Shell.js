@@ -37,13 +37,14 @@ const Shell = props => {
     const [activeStep, setActiveStep] = useState(0);
     const [errorDialog, setError] = useState({
         open: false,
-        errorText: {}
+        error: {}
     });
 
     ipcRenderer.on('error', (event, error) => {
+        console.log(error);
         setError({
             open: true,
-            errorText: error.toString()
+            error
         })
     });
 
@@ -66,7 +67,7 @@ const Shell = props => {
     const closeErrorDialog = () => {
         setError({
             open: false,
-            errorText: ''
+            error: {}
         });
     };
 
@@ -100,7 +101,7 @@ const Shell = props => {
                 </StyledStepperContainer>
             </StyledContent>
             <ErrorDialog open={errorDialog.open} onClose={closeErrorDialog}
-                         error={errorDialog.errorText}/>
+                         error={errorDialog.error}/>
         </StyledShell>
     )
 };

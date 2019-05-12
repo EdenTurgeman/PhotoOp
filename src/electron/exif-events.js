@@ -23,7 +23,7 @@ const getDateInfo = (field, tags) => {
 };
 
 const handleUserField = (field, tags, filePath) => {
-    if(field.userInput && field.fieldValue){
+    if (field.userInput && field.fieldValue) {
         return field.fieldValue;
     }
 
@@ -90,15 +90,19 @@ ipcMain.on('moveFiles', (event, {srcPath, destPath, usedFields}) => {
                     }).then(() => {
                             event.sender.send('progress-report', index);
                         }
-                    ).catch(error => event.sender.send('error', error));
+                    ).catch(error => {
+                            console.log(error);
+                            event.sender.send('error', error)
+                        }
+                    );
 
                 filePromises.push(finalFilePath);
             });
 
             Promise.all(filePromises).then(() => event.sender.send('moveFiles-reply'));
         })
-    } catch {
-        return (error) => event.sender.send('error', error)
+    } catch (error) {
+        event.sender.send('error', error);
     }
 });
 

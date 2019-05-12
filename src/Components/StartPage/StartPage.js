@@ -24,10 +24,10 @@ const StartPage = props => {
         });
     };
 
-    function unsubscribeFromUpdates() {
+    const unsubscribeFromUpdates = () => {
         ipcRenderer.removeAllListeners("moveFiles-reply");
         ipcRenderer.removeAllListeners("progress-report");
-    }
+    };
 
     useEffect(() => {
         subscribeToUpdates();
