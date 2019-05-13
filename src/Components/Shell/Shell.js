@@ -33,7 +33,6 @@ const getStepComponent = step => {
 };
 
 const Shell = props => {
-
     const [activeStep, setActiveStep] = useState(0);
     const [errorDialog, setError] = useState({
         open: false,
@@ -41,7 +40,6 @@ const Shell = props => {
     });
 
     ipcRenderer.on('error', (event, error) => {
-        console.log(error);
         setError({
             open: true,
             error

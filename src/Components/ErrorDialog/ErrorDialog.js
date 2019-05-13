@@ -4,7 +4,7 @@ import {Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogT
 const ErrorDialog = props => {
 
     const getErrorText = () => {
-        return props.error.fullError ? props.error.fullError : JSON.stringify(props.error)
+        return props.error.text ? props.error.text : JSON.stringify(props.error)
     };
 
     return (<Dialog

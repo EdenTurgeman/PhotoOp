@@ -17,7 +17,7 @@
     "userField": true
   },
   {
-    "exifName": ["LensModel", "LensSpec"],
+    "exifName": ["LensModel", "LensSpec", "LensID", "Lens"],
     "alias": "Lens Type"
   },
   {

@@ -3,6 +3,8 @@ const {exiftool} = require('exiftool-vendored');
 const recursive = require("recursive-readdir");
 const {extname, basename, join, relative} = require('path');
 const {moveSync, ensureDirSync} = require('fs-extra');
+const {saveFullConfig} = require("./userSettingsStore");
+
 
 // Node doesn't ship with the conversion method of month to text and i don't want to install another module due to package size.
 const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
@@ -10,7 +12,7 @@ const months = ["January", "February", "March", "April", "May", "June", "July", 
 const createError = (text, error) => {
     return {
         text,
-        error
+        innerError: error
     }
 };
 
@@ -45,10 +47,11 @@ const handleUserField = (field, tags, filePath) => {
 
 const handleExifField = (field, tags) => {
     const exifField = field.exifName.find(exifName => {
+        //console.log("name: " + exifName + " tagInName: " + tags[exifName]);
         return tags[exifName] !== undefined;
     });
 
-    const exifData = tags[exifField].toString();
+    const exifData = tags[exifField];
 
     if (exifData !== undefined) {
         return exifData;
@@ -76,9 +79,15 @@ const buildPathForFile = (usedFields, filePath, rootDestPath) => {
 
 
 ipcMain.on('moveFiles', (event, {srcPath, destPath, usedFields}) => {
-    const filePromises = [];
     try {
-        recursive(srcPath, (err, files) => {
+        saveFullConfig(usedFields, srcPath, destPath);
+        const filePromises = [];
+
+        recursive(srcPath, (error, files) => {
+            if (error) {
+                event.sender.send('error', createError('An error has occurred while reading your source folder, please check that it is not being used and permissions are not restricted', error));
+                return
+            }
             files.forEach((filePath, index) => {
                 const relativeFilePath = relative(process.cwd(), filePath);
 
@@ -91,8 +100,9 @@ ipcMain.on('moveFiles', (event, {srcPath, destPath, usedFields}) => {
                             event.sender.send('progress-report', index);
                         }
                     ).catch(error => {
-                            console.log(error);
-                            event.sender.send('error', error)
+                            event.sender.send('error',
+                                createError(error.text ? error.text : 'An error has occurred while reading one of your files, the file will not be copied and the operation will proceed',
+                                    error.innerError ? error.innerError : error));
                         }
                     );
 
@@ -102,7 +112,7 @@ ipcMain.on('moveFiles', (event, {srcPath, destPath, usedFields}) => {
             Promise.all(filePromises).then(() => event.sender.send('moveFiles-reply'));
         })
     } catch (error) {
-        event.sender.send('error', error);
+        event.sender.send('error', createError('an error has occurred', error));
     }
 });
 
