@@ -96,7 +96,9 @@ ipcMain.on('moveFiles', (event, {srcPath, destPath, usedFields}) => {
                         ensureDirSync(fileDestPath);
                         moveSync(relativeFilePath, join(fileDestPath, basename(filePath)));
                     }).then(() => {
-                            event.sender.send('progress-report', index);
+                            if ((index % 3 === 0) || index === files.length - 1) {
+                                event.sender.send('progress-report', index);
+                            }
                         }
                     ).catch(error => {
                             event.sender.send('error',

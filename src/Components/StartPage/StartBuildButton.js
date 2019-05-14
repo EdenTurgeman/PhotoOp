@@ -1,5 +1,5 @@
 import React from "react";
-import {CircularProgress, Fab, withStyles} from "@material-ui/core";
+import {CircularProgress, Fab, Tooltip, withStyles} from "@material-ui/core";
 import {Check, Save} from "@material-ui/icons";
 import * as PropTypes from "prop-types";
 
@@ -7,7 +7,7 @@ const styles = theme => ({
     wrapper: {
         position: 'relative',
     },
-    wrapperLoading:{
+    wrapperLoading: {
         marginTop: '100px'
     },
     buttonSuccess: {
@@ -23,25 +23,23 @@ const styles = theme => ({
         left: -6,
         zIndex: 1,
     },
-    buttonProgress: {
-        color: theme.palette.primary.light,
-        position: 'absolute',
-        top: '50%',
-        left: '50%',
-        marginTop: -12,
-        marginLeft: -12,
-    },
 });
 
 const StartBuildButton = props => {
     return (
 
-        <div className={`${props.classes.wrapper} ${(props.success || props.loading) ? props.classes.wrapperLoading : ''}`}>
-            <Fab disabled={props.disabled()} color="primary" className={props.classes.buttonSuccess} onClick={props.onClick}>
-                {props.success ? <Check/> : <Save/>}
-            </Fab>
-            {props.loading && <CircularProgress disableShrink size={68} className={props.classes.fabProgress}/>}
-        </div>
+        <Tooltip title={props.toolTipMessage} placement="right">
+            <div
+                className={`${props.classes.wrapper} ${(props.success || props.loading) ? props.classes.wrapperLoading : ''}`}>
+
+                <Fab disabled={props.disabled()} color="primary" className={props.classes.buttonSuccess}
+                     onClick={props.onClick}>
+                    {props.success ? <Check/> : <Save/>}
+                </Fab>
+
+                {props.loading && <CircularProgress disableShrink size={68} className={props.classes.fabProgress}/>}
+            </div>
+        </Tooltip>
     )
 };
 

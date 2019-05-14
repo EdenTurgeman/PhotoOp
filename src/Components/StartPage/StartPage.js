@@ -1,16 +1,22 @@
 import React, {Fragment, useEffect, useState} from 'react';
 import {connect} from "react-redux";
-import BuildConfirmationDialog from "./BuildConfirmationDialog";
 import StartBuildButton from "./StartBuildButton";
+import BuildConfirmationDialog from "./BuildConfirmationDialog";
 import {setProcessEnded, setProcessStarted, setProcessSuccess,} from "../../Redux/actions/MoveActions";
 import ProcessLoading from "./ProcessLoading";
 
 const {ipcRenderer} = window;
 
+const toolTipMessages = {
+    path: 'Please set a path',
+    field: 'Project name is not filled'
+};
+
 const StartPage = props => {
     const [filesInFolder, setFilesInFolder] = useState(0);
     const [filedDone, setFilesDone] = useState(0);
     const [confirmationOpen, setConfirmationOpen] = useState(false);
+    const [toolTipMessage, setToolTipMessage] = useState('');
 
     const subscribeToUpdates = () => {
         ipcRenderer.on('moveFiles-reply', () => {
@@ -19,8 +25,10 @@ const StartPage = props => {
             props.onComplete();
         });
 
-        ipcRenderer.on('progress-report', (event, filesDone) => {
-            setFilesDone(filesDone);
+        ipcRenderer.on('progress-report', (event, progressUpdate) => {
+            if(progressUpdate > filedDone){
+                setFilesDone(progressUpdate);
+            }
         });
     };
 
@@ -58,12 +66,24 @@ const StartPage = props => {
     };
 
     const isPathSet = () => {
-        return !(props.path.srcPath && props.path.destPath);
+        return (props.path.srcPath && props.path.destPath);
     };
+
+    const areUserFieldsFull = () => {
+        return props.path.usedFields.every(field => {
+            return !field.userInput || field.fieldValue !== undefined;
+        });
+    };
+
+    useEffect(() => {
+        setToolTipMessage(!isPathSet() ? toolTipMessages.path : '');
+        setToolTipMessage(!areUserFieldsFull() ? toolTipMessages.field: '');
+    }, [props.path]);
 
     return (
         <Fragment>
-            <StartBuildButton disabled={isPathSet} classes={props.classes}
+            <StartBuildButton toolTipMessage={toolTipMessage}
+                              disabled={() => !(isPathSet() && areUserFieldsFull())} classes={props.classes}
                               onClick={handleToggleDialog}
                               success={props.move.processSuccess}
                               loading={props.move.processRunning}/>
@@ -80,7 +100,7 @@ const StartPage = props => {
                                      onConfirm={handleStartBuild}/>
         </Fragment>
     );
-}
+};
 
 const mapStateToProps = (state) => {
     return {
