@@ -1,4 +1,5 @@
 import React, {createElement, useState} from "react";
+import {connect} from 'react-redux';
 import TitleBar from "../TitleBar/TitleBar";
 import PathPage from "../PathPage/PathPage";
 import StructurePage from "../StructurePage/StructurePage";
@@ -86,7 +87,7 @@ const Shell = props => {
                              activeStep={activeStep}>
                         {
                             steps.map((step, index) => {
-                                return <Step key={step.label}>
+                                return <Step key={step.label} disabled={props.move.processRunning}>
                                     <StepButton onClick={handleStep(index)}
                                                 optional={<Typography variant="caption">{step.subText}</Typography>}
                                                 completed={steps[index].completed}>
@@ -104,4 +105,9 @@ const Shell = props => {
     )
 };
 
-export default Shell;
+const mapStateToProps = state => {
+    return {
+        move: state.move
+    }
+};
+export default connect(mapStateToProps)(Shell);
