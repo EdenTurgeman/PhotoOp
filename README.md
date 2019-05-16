@@ -6,6 +6,11 @@ PhotoOp Is a new Small application for creators and photographers with a goal to
 
 3) Press and go, PhotoOp will save the settings you like, So next time you shoot you're one click away from organized footage.
 
+| Select Directories  | Folder Orgnization | Start Offload!
+| ------------- | ------------- | ------------
+| ![alt text](https://user-images.githubusercontent.com/12447231/57834041-11f3da80-77c4-11e9-82e6-589e252a8669.PNG)  | ![Path](https://user-images.githubusercontent.com/12447231/57834058-1b7d4280-77c4-11e9-8f03-3470b8c7ab9f.PNG)  | ![Start](https://user-images.githubusercontent.com/12447231/57834067-21732380-77c4-11e9-9e5d-90c67386faaa.PNG)
+
+
 
 ## Available Scripts
 
