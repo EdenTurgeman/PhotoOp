@@ -26,7 +26,7 @@ const StartPage = props => {
         });
 
         ipcRenderer.on('progress-report', (event, progressUpdate) => {
-            if(progressUpdate > filedDone){
+            if (progressUpdate > filedDone) {
                 setFilesDone(progressUpdate);
             }
         });
@@ -41,9 +41,7 @@ const StartPage = props => {
         subscribeToUpdates();
         setFilesInFolder(ipcRenderer.sendSync('filesInFolder', props.path.srcPath));
 
-        return () => {
-            unsubscribeFromUpdates();
-        }
+        return unsubscribeFromUpdates;
     }, []);
 
     const handleToggleDialog = () => {
@@ -77,7 +75,7 @@ const StartPage = props => {
 
     useEffect(() => {
         setToolTipMessage(!isPathSet() ? toolTipMessages.path : '');
-        setToolTipMessage(!areUserFieldsFull() ? toolTipMessages.field: '');
+        setToolTipMessage(!areUserFieldsFull() ? toolTipMessages.field : '');
     }, [props.path]);
 
     return (

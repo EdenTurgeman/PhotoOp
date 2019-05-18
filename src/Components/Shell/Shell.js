@@ -1,33 +1,12 @@
 import React, {createElement, useState} from "react";
 import {connect} from 'react-redux';
 import TitleBar from "../TitleBar/TitleBar";
-import PathPage from "../PathPage/PathPage";
-import StructurePage from "../StructurePage/StructurePage";
-import StartPage from "../StartPage/StartPage";
+import steps from "./steps";
 import {Step, StepButton, StepLabel, Stepper, Typography} from "@material-ui/core";
 import {StyledContent, StyledPagesContainer, StyledShell, StyledStepperContainer,} from "./StyledComponents";
 import ErrorDialog from "../ErrorDialog/ErrorDialog";
 
 const {ipcRenderer} = window;
-
-const steps = [
-    {
-        label: 'Location',
-        component: PathPage,
-        completed: false
-    },
-    {
-        label: 'Folders',
-        component: StructurePage,
-        subText: 'Optional',
-        completed: false
-    },
-    {
-        label: 'Start',
-        component: StartPage,
-        completed: false
-    }
-];
 
 const getStepComponent = step => {
     return steps[step].component;
@@ -52,15 +31,11 @@ const Shell = props => {
     };
 
     const onCompleteStep = stepIndex => {
-        if (!steps[stepIndex].completed) {
-            steps[stepIndex].completed = true;
-        }
+        steps[stepIndex].completed = true;
     };
 
     const onCancelStep = stepIndex => {
-        if (steps[stepIndex].completed) {
-            steps[stepIndex].completed = false;
-        }
+        steps[stepIndex].completed = false;
     };
 
     const closeErrorDialog = () => {

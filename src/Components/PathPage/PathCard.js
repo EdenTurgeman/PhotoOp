@@ -23,12 +23,12 @@ const StyledPathText = styled(Typography)`
 `;
 
 export const PathCard = props => {
-    const selectDirectory = setPath => {
-        dialog.showOpenDialog({properties: ['openDirectory', 'multiSelections']}, setPath);
+    const selectDirectory = () => {
+        dialog.showOpenDialog({properties: ['openDirectory', 'multiSelections']}, props.setPath);
     };
     return (
         <StyledPathCard>
-            <Button onClick={() => selectDirectory(props.setPath)}>{props.text}</Button>
+            <Button onClick={selectDirectory}>{props.text}</Button>
             <StyledPathText>{props.path}</StyledPathText>
         </StyledPathCard>
     );

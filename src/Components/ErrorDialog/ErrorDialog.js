@@ -9,14 +9,14 @@ const ErrorDialog = props => {
     return (<Dialog
             open={props.open}
             onClose={props.onClose}>
-            <DialogTitle id="alert-dialog-title">{"Warning, a problem was detected in one of the files"}</DialogTitle>
+            <DialogTitle>{"Warning, a problem was detected in one of the files"}</DialogTitle>
             <DialogContent>
-                <DialogContentText id="alert-dialog-description">
+                <DialogContentText>
                     {getErrorText()}
                 </DialogContentText>
             </DialogContent>
             <DialogActions>
-                <Button onClick={props.onClose} color="primary" autoFocus>
+                <Button onClick={props.onClose} color="primary">
                     Continue
                 </Button>
             </DialogActions>

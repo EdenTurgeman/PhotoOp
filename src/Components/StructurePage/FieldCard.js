@@ -11,12 +11,12 @@ import {
     StyledTrashIconButton
 } from "./StyledComponents";
 
-const fileNamePattern = '([a-zA-Z0-9\\s_\\\\.\\-\\(\\):])+$';
+const folderNamePattern = '([a-zA-Z0-9\\s_\\\\.\\-\\(\\):])+$';
 
 const FieldCard = props => {
     const {field, provided} = props;
 
-    const isFolderNameValid = value => new RegExp(fileNamePattern).test(value);
+    const isFolderNameValid = projectName => new RegExp(folderNamePattern).test(projectName);
 
     const updateFieldValue = (fieldIndex, fieldValue) => {
         if (isFolderNameValid(fieldValue)) {
