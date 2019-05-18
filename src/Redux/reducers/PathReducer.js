@@ -1,8 +1,13 @@
 import {ADD_FIELD, REMOVE_FIELD, SET_DEST, SET_SRC, SWAP_FIELDS, UPDATE_FIELD} from "../actions/PathActions";
 import pathFields from '../../assets/camera-fields-map';
+
 const {ipcRenderer} = window;
 
-const {usedFields, srcPath, destPath} = ipcRenderer.sendSync('getFullSettings');
+const {usedFields: loadedFields, srcPath, destPath} = ipcRenderer.sendSync('getFullSettings');
+
+const usedFields = pathFields.filter(field =>
+    loadedFields.findIndex(usedField => usedField.alias === field.alias) !== -1
+);
 
 const openFields = pathFields.filter(openField =>
     usedFields.findIndex(usedField => usedField.alias === openField.alias) === -1

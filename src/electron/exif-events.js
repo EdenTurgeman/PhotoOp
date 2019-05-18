@@ -47,8 +47,7 @@ const handleUserField = (field, tags, filePath) => {
 
 const handleExifField = (field, tags) => {
     const exifField = field.exifName.find(exifName => {
-        //console.log("name: " + exifName + " tagInName: " + tags[exifName]);
-        return tags[exifName] !== undefined;
+        return tags[exifName];
     });
 
     const exifData = tags[exifField];
@@ -62,7 +61,7 @@ const handleExifField = (field, tags) => {
 
 const buildPathForFile = (usedFields, filePath, rootDestPath) => {
     let fileDest = rootDestPath;
-
+    
     return exiftool
         .read(filePath)
         .then((tags) => {
@@ -70,7 +69,7 @@ const buildPathForFile = (usedFields, filePath, rootDestPath) => {
                 const pathAddition = field.userField ? handleUserField(field, tags, filePath) : handleExifField(field, tags);
 
                 // Remove forward slashes so sub-folders won't be created accidentally
-                fileDest = join(fileDest, pathAddition.toString().replace(/\//g, '`'));
+                fileDest = join(fileDest, pathAddition.toString().replace(/[/\\:?<>|\"]+/g, "`"));
             });
 
             return fileDest;
@@ -101,6 +100,7 @@ ipcMain.on('moveFiles', (event, {srcPath, destPath, usedFields}) => {
                             }
                         }
                     ).catch(error => {
+                        console.log(error);
                             event.sender.send('error',
                                 createError(error.text ? error.text : 'An error has occurred while reading one of your files, the file will not be copied and the operation will proceed',
                                     error.innerError ? error.innerError : error));

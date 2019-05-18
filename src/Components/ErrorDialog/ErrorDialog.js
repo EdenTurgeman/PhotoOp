@@ -2,7 +2,6 @@ import React from "react";
 import {Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle} from "@material-ui/core";
 
 const ErrorDialog = props => {
-
     const getErrorText = () => {
         return props.error.text ? props.error.text : JSON.stringify(props.error)
     };
