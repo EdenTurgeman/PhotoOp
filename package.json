@@ -1,12 +1,12 @@
 {
   "name": "photo-op",
-  "version": "0.9.3",
+  "version": "0.9.4",
   "private": true,
   "productName": "PhotoOp,",
   "main": "src/electron/main.js",
   "dependencies": {
     "electron-store": "^3.2.0",
-    "exiftool-vendored": "^8.9.0",
+    "exiftool-vendored": "^8.10.1",
     "fs-extra": "^8.0.1",
     "recursive-readdir": "^2.2.2"
   },
@@ -31,7 +31,7 @@
   "devDependencies": {
     "@material-ui/core": "^3.9.3",
     "@material-ui/icons": "^3.0.2",
-    "electron-builder": "^20.40.2",
+    "electron-builder": "^20.41.0",
     "prop-types": "latest",
     "react": "^16.8.6",
     "react-beautiful-dnd": "^11.0.3",
@@ -39,7 +39,7 @@
     "react-redux": "^7.0.3",
     "react-scripts": "^3.0.1",
     "redux": "^4.0.1",
-    "styled-components": "^4.2.0"
+    "styled-components": "^4.2.1"
   },
   "build": {
     "asar": true,

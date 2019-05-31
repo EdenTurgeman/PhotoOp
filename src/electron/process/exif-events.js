@@ -1,74 +1,21 @@
 const {ipcMain} = require('electron');
 const {exiftool} = require('exiftool-vendored');
 const recursive = require("recursive-readdir");
-const {extname, basename, join, relative} = require('path');
+const {createError} = require("./errors");
+const {basename, join, relative} = require('path');
 const {moveSync, ensureDirSync} = require('fs-extra');
-const {saveFullConfig} = require("./userSettingsStore");
-
-
-// Node doesn't ship with the conversion method of month to text and i don't want to install another module due to package size.
-const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-
-const createError = (text, error) => {
-    return {
-        text,
-        innerError: error
-    }
-};
-
-const getExtension = file => {
-    return extname(file).replace('.', '');
-};
-
-const getDateInfo = (field, tags) => {
-    return new Date(tags[field.exifName])
-};
-
-const handleUserField = (field, tags, filePath) => {
-    if (field.userInput && field.fieldValue) {
-        return field.fieldValue;
-    }
-
-    switch (field.id) {
-        case "Day": {
-            return getDateInfo(field, tags).getDate().toString();
-        }
-        case "Month" : {
-            return months[getDateInfo(field, tags).getMonth()];
-        }
-        case "Year": {
-            return getDateInfo(field, tags).getFullYear().toString();
-        }
-        case "FileType": {
-            return (getExtension(filePath));
-        }
-    }
-};
-
-const handleExifField = (field, tags) => {
-    const exifField = field.exifName.find(exifName => {
-        return tags[exifName];
-    });
-
-    const exifData = tags[exifField];
-
-    if (exifData !== undefined) {
-        return exifData;
-    }
-
-    throw createError("We're sorry " + field.alias + " is not supported by your images. Unsupported Files will not be transferred.", "this no tag matching" + JSON.stringify(tags));
-};
+const {saveFullConfig} = require("../userSettingsStore");
+const {handleExifField, handleUserField} = require('./field-handlers');
 
 const buildPathForFile = (usedFields, filePath, rootDestPath) => {
     let fileDest = rootDestPath;
-    
+
     return exiftool
         .read(filePath)
         .then((tags) => {
             usedFields.forEach(field => {
                 const pathAddition = field.userField ? handleUserField(field, tags, filePath) : handleExifField(field, tags);
 
-                // Remove forward slashes so sub-folders won't be created accidentally
                 fileDest = join(fileDest, pathAddition.toString().replace(/[/\\:?<>|\"]+/g, "`"));
             });
 
@@ -94,13 +41,9 @@ ipcMain.on('moveFiles', (event, {srcPath, destPath, usedFields}) => {
                     .then(fileDestPath => {
                         ensureDirSync(fileDestPath);
                         moveSync(relativeFilePath, join(fileDestPath, basename(filePath)));
-                    }).then(() => {
-                            if ((index % 3 === 0) || index === files.length - 1) {
-                                event.sender.send('progress-report', index);
-                            }
-                        }
-                    ).catch(error => {
-                        console.log(error);
+                        event.sender.send('progress-report', index);
+                    }).catch(error => {
+                            console.log(error);
                             event.sender.send('error',
                                 createError(error.text ? error.text : 'An error has occurred while reading one of your files, the file will not be copied and the operation will proceed',
                                     error.innerError ? error.innerError : error));

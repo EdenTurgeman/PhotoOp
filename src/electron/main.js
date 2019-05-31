@@ -1,6 +1,6 @@
 const {app, BrowserWindow} = require('electron');
 const {join} = require('path');
-require('./exif-events');
+require('./process/exif-events');
 
 let win;
 
