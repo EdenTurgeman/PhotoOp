@@ -6,7 +6,7 @@
   "main": "src/electron/main.js",
   "dependencies": {
     "electron-store": "^3.2.0",
-    "exiftool-vendored": "^8.10.1",
+    "exiftool-vendored": "^14.3.0",
     "fs-extra": "^8.0.1",
     "recursive-readdir": "^2.2.2"
   },
